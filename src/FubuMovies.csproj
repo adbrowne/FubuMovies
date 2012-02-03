@@ -123,11 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.asset.config" />
-    <None Include="Shared\Application.spark" />
-    <None Include="Timetable\View.spark" />
+    <Content Include="Shared\Application.spark" />
+    <Content Include="Timetable\View.spark" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="fubu-content\" />
+    <Content Include="fubu-content\fubumvc-diagnostics.zip" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
