@@ -6,6 +6,10 @@ using System.Web.Security;
 using System.Web.SessionState;
 using FubuMovies.Timetable;
 using FubuMVC.Core;
+using FubuMVC.Core.Runtime;
+using FubuMVC.Core.Security.AntiForgery;
+using FubuMVC.Core.UI.Extensibility;
+using FubuMVC.Core.Urls;
 using FubuMVC.Spark;
 using FubuMVC.StructureMap;
 using StructureMap;
@@ -58,20 +62,42 @@ namespace FubuMovies
     {
         public FubuMoviesRegistry()
         {
+            IncludeDiagnostics(true);
+
             Applies
                 .ToThisAssembly();
 
             Actions
                 .IncludeClassesSuffixedWithController();
 
+            ApplyHandlerConventions();
+
             Routes
                 .HomeIs<TimetableRequest>()
-                .IgnoreControllerNamespaceEntirely();
+                .IgnoreControllerNamespaceEntirely()
+                .IgnoreMethodSuffix("Command")
+                .IgnoreMethodSuffix("Query")
+                .ConstrainToHttpMethod(action => action.Method.Name.EndsWith("Command"), "POST")
+                .ConstrainToHttpMethod(action => action.Method.Name.StartsWith("Query"), "GET");
+
+            Policies.Add<AntiForgeryPolicy>();
 
             this.UseSpark();
 
             Views
-                .TryToAttachWithDefaultConventions();
+                .TryToAttachWithDefaultConventions()
+                .TryToAttachViewsInPackages();
+
+            //HtmlConvention<SampleHtmlConventions>();
+
+            Services(s =>
+            {
+                //s.FillType<IExceptionHandler, AsyncExceptionHandler>();
+                s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>();
+            });
+
+            this.Extensions()
+                .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
         }
     }
 }

@@ -1,3 +1,6 @@
 ﻿<viewdata model="FubuMovies.Timetable.TimetableViewModel" />
-
-Test
+<content:title>
+  Whatever
+</content:title>
+<h1>Movie Timetable</h1>
+Insert Table here
