@@ -62,8 +62,6 @@ namespace FubuMovies
     {
         public FubuMoviesRegistry()
         {
-            IncludeDiagnostics(true);
-
             Applies
                 .ToThisAssembly();
 
