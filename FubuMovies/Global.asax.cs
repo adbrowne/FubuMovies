@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using FubuMovies.Timetable;
 using FubuMVC.Core;
+using FubuMVC.Spark;
 using FubuMVC.StructureMap;
 using StructureMap;
 
@@ -56,7 +58,20 @@ namespace FubuMovies
     {
         public FubuMoviesRegistry()
         {
-            
+            Applies
+                .ToThisAssembly();
+
+            Actions
+                .IncludeClassesSuffixedWithController();
+
+            Routes
+                .HomeIs<TimetableRequest>()
+                .IgnoreControllerNamespaceEntirely();
+
+            this.UseSpark();
+
+            Views
+                .TryToAttachWithDefaultConventions();
         }
     }
 }
