@@ -14,7 +14,7 @@ namespace FubuMovies.Timetable
 
         public TimetableViewModel View(TimetableRequest request)
         {
-            var session = unifOfWork.CurrentSession.Get<MovieSession>((long)1);
+            var session = unifOfWork.CurrentSession.Get<MovieSession>(1);
             return new TimetableViewModel();
         }
     }

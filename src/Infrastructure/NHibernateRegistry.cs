@@ -21,14 +21,17 @@ namespace FubuMovies.Infrastructure
     {
         private static ISessionFactory CreateSessionFactory()
         {
-            return Fluently.Configure()
+            var configuration = Fluently.Configure()
               .Database(
                 MsSqlConfiguration.MsSql2008
                 .ConnectionString(c => c.FromConnectionStringWithKey("MovieDB"))
               )
               .Mappings(m =>
                 m.FluentMappings.AddFromAssemblyOf<MovieSessionMap>())
-              .BuildSessionFactory();
+                .BuildConfiguration();
+
+            configuration.SetProperty("hbm2ddl.auto", "update");
+            return configuration.BuildSessionFactory();
         }
 
         public NHibernateRegistry()
