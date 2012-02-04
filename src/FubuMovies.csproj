@@ -125,10 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Movie.cs" />
+    <Compile Include="Data\MovieRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Core\MovieSession.cs" />
+    <Compile Include="Infrastructure\Maps\MovieMap.cs" />
     <Compile Include="Infrastructure\Maps\MovieSessionMap.cs" />
     <Compile Include="Infrastructure\NHibernateConfiguration.cs" />
     <Compile Include="Infrastructure\NHibernateRegistry.cs" />
