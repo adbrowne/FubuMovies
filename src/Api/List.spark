@@ -1,0 +1,8 @@
+﻿<viewdata model="FubuMovies.Api.MovieListViewModel" />
+<content:title>
+   Movies
+</content:title>
+<h1>Movies</h1>
+<for each="var movie in Model.Items">
+  <p>${movie.Name}</p>
+</for>

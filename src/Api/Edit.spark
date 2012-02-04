@@ -1,0 +1,21 @@
+﻿<viewdata model="FubuMovies.Api.MovieViewModel" />
+<content:title>
+  Edit Movie
+</content:title>
+<h1>Edit Movie</h1>
+<Form model="MovieUpdateInputModel">
+  <InputFor property="Id" />
+  <div class="row">
+    <LabelFor property="Name" />
+    <InputFor property="Name" />
+  </div>
+  <div class="row">
+    <LabelFor property="Description" />
+    <InputFor property="Description" />
+  </div>
+  <div class="row row-submit">
+    <button type="submit">
+      <span>Save Movie</span>
+    </button>
+  </div>
+</Form>

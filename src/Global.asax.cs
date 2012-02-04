@@ -9,6 +9,7 @@ using FubuMovies.Infrastructure;
 using FubuMovies.Login;
 using FubuMovies.Timetable;
 using FubuMVC.Core;
+using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
@@ -84,6 +85,9 @@ namespace FubuMovies
 
             Policies.Add<AntiForgeryPolicy>();
 
+            Policies.WrapBehaviorChainsWith<TransactionBehavior>(); 
+
+
             this.UseSpark();
 
             Views
@@ -102,6 +106,41 @@ namespace FubuMovies
             this.Extensions()
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
         }
+    }
+
+    class TransactionBehavior : IActionBehavior
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IActionBehavior _innerBehaviour;
+
+        public TransactionBehavior(IUnitOfWork unitOfWork, IActionBehavior innerBehaviour)
+        {
+            _unitOfWork = unitOfWork;
+            _innerBehaviour = innerBehaviour;
+        }
+
+        //ctor with dependency on ISession and IActionBehavior 
+        public void Invoke()
+        {
+
+
+            try
+            {
+                _innerBehaviour.Invoke();
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+
+        }
+        public void InvokePartial()
+        {
+            _innerBehaviour.InvokePartial();
+        }
+
     }
 
     public class AuthorizationHandler : IAuthorizationFailureHandler

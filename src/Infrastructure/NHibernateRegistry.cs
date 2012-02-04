@@ -44,6 +44,8 @@ namespace FubuMovies.Infrastructure
                 .SetProperty(Environment.ProxyFactoryFactoryClass, typeof(ProxyFactoryFactory).AssemblyQualifiedName)
                 .AddAssembly(typeof(MovieSession).Assembly);
 
+            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
+
             var sessionFactory = CreateSessionFactory();
 
             For<Configuration>().Singleton().Use(cfg);
@@ -64,6 +66,7 @@ namespace FubuMovies.Infrastructure
     {
         ISession CurrentSession { get; }
         void Commit();
+        void Rollback();
     }
 
     public class UnitOfWork : IUnitOfWork
@@ -89,6 +92,11 @@ namespace FubuMovies.Infrastructure
         public void Commit()
         {
             transaction.Commit();
+        }
+
+        public void Rollback()
+        {
+            transaction.Rollback();
         }
     }
 }
