@@ -125,6 +125,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\EditorController.cs" />
     <Compile Include="Core\Movie.cs" />
     <Compile Include="Data\MovieRepository.cs" />
     <Compile Include="Global.asax.cs">
@@ -135,6 +136,7 @@
     <Compile Include="Infrastructure\Maps\MovieSessionMap.cs" />
     <Compile Include="Infrastructure\NHibernateConfiguration.cs" />
     <Compile Include="Infrastructure\NHibernateRegistry.cs" />
+    <Compile Include="Login\LoginController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Timetable\TimetableController.cs" />
   </ItemGroup>

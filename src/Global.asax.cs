@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 using FubuMovies.Infrastructure;
+using FubuMovies.Login;
 using FubuMovies.Timetable;
 using FubuMVC.Core;
 using FubuMVC.Core.Runtime;
+using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
 using FubuMVC.Core.UI.Extensibility;
 using FubuMVC.Core.Urls;
@@ -93,10 +96,29 @@ namespace FubuMovies
             {
                 //s.FillType<IExceptionHandler, AsyncExceptionHandler>();
                 s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>();
+                s.AddService<IAuthorizationFailureHandler, AuthorizationHandler>();
             });
 
             this.Extensions()
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
+        }
+    }
+
+    public class AuthorizationHandler : IAuthorizationFailureHandler
+    {
+        private readonly IOutputWriter _writer;
+        private readonly IUrlRegistry _registry;
+
+        public AuthorizationHandler(IOutputWriter writer, IUrlRegistry registry)
+        {
+            _writer = writer;
+            _registry = registry;
+        }
+
+        public void Handle()
+        {
+            string url = _registry.UrlFor(new LoginInputModel());
+            _writer.RedirectToUrl(url);
         }
     }
 }
