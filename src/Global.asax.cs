@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using FubuMovies.Infrastructure;
 using FubuMovies.Timetable;
 using FubuMVC.Core;
 using FubuMVC.Core.Runtime;
@@ -23,7 +24,7 @@ namespace FubuMovies
         {
             FubuApplication
                 .For<FubuMoviesRegistry>()
-                .StructureMap(() => new Container())
+                .StructureMap(() => new Container(new NHibernateRegistry()))
                 .Bootstrap();
         }
 

@@ -3,3 +3,4 @@ obj
 _Resharper.*
 *.user
 *.suo
+src/fubu-content/fubumvc-diagnostics/
