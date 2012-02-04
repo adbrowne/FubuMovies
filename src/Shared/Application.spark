@@ -20,6 +20,7 @@
     <!-- Le styles -->
 	<Asset name="bootstrap-css" />
 	<Asset name="bootstrap-responsive-css" />
+	<Asset name="site-css" />
     
 	<style>
       body {

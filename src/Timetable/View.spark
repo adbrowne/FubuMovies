@@ -5,6 +5,7 @@
 <h1>Movie Timetable</h1>
 <table class="table table-bordered">
   <tr>
+    <th>&nbsp;</th>
     <th>Sunday</th>
     <th>Monday</th>
     <th>Tuesday</th>
@@ -12,5 +13,29 @@
     <th>Thursday</th>
     <th>Friday</th>
     <th>Saturday</th>
+  </tr>
+  <tr class="session-row">
+    <td class="session-column">
+      <div class="offset offset-9am">9:00 am</div>
+      <div class="offset offset-1130am">11:30 am</div>
+    </td>
+    <td class="session-column">
+      <div class="offset offset-1130am length-120 movie">
+        <h3>The Gladiator</h3>
+        <p>Crazy movie with Russel Crowe.</p>
+      </div>
+    </td>
+    <td class="session-column">
+      <div class="offset offset-1130am length-120 movie">
+        <h3>The Gladiator</h3>
+        <p>Crazy movie with Russel Crowe.</p>
+      </div>
+    </td>
+    <td class="session-column">
+      <div class="offset offset-1130am length-120 movie">
+        <h3>The Gladiator</h3>
+        <p>Crazy movie with Russel Crowe.</p>
+      </div>
+    </td>
   </tr>
 </table>

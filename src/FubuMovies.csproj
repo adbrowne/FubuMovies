@@ -113,6 +113,7 @@
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\scripts\bootstrap.js" />
     <Content Include="Content\scripts\bootstrap.min.js" />
+    <Content Include="Content\styles\site.css" />
     <Content Include="Global.asax" />
     <Content Include="Shared\bindings.xml" />
     <Content Include="Web.config" />
