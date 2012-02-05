@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 using FubuMovies.Infrastructure;
-using FubuMovies.Login;
 using FubuMovies.Timetable;
+using FubuMovies.Login;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
-using FubuMVC.Core.Runtime;
+using FubuMVC.Core.Registration;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
 using FubuMVC.Core.UI.Extensibility;
 using FubuMVC.Core.Urls;
 using FubuMVC.Spark;
 using FubuMVC.StructureMap;
+using FubuMVC.Validation;
+using FubuValidation;
 using StructureMap;
 
 namespace FubuMovies
@@ -81,20 +84,40 @@ namespace FubuMovies
                 .IgnoreMethodSuffix("Command")
                 .IgnoreMethodSuffix("Query")
                 .ConstrainToHttpMethod(action => action.Method.Name.EndsWith("Command"), "POST")
-                .ConstrainToHttpMethod(action => action.Method.Name.StartsWith("Query"), "GET");
+                .ConstrainToHttpMethod(action => action.Method.Name.StartsWith("Index"), "GET")
+                .ConstrainToHttpMethod(action => action.Method.Name.ToLower() == "get", "GET")
+                .ConstrainToHttpMethod(action => action.Method.Name.ToLower() == "post", "POST");
+
+            Actions.IncludeTypes(t => t.Name.EndsWith("Handler")).IgnoreMethodsDeclaredBy<AuthorizationHandler>();
 
             Policies.Add<AntiForgeryPolicy>();
 
-            Policies.WrapBehaviorChainsWith<TransactionBehavior>(); 
+            Policies.WrapBehaviorChainsWith<TransactionBehavior>();
 
+            Policies.WrapBehaviorChainsWith<LoginBehaviour>().Ordering(a => a.MustBeBeforeAuthorization());
 
             this.UseSpark();
 
             Views
                 .TryToAttachWithDefaultConventions()
-                .TryToAttachViewsInPackages();
+                .TryToAttachViewsInPackages()
+                .RegisterActionLessViews(t => t.ViewModelType == typeof(Notification));
 
             //HtmlConvention<SampleHtmlConventions>();
+
+            this.Validation(validation =>
+                                {
+                                    validation.Actions.Include(
+                                        call =>
+                                        call.HasInput &&
+                                        call.InputType().GetInterfaces().Contains(typeof (IValidationModel)));
+
+                                    validation
+                                        .Failures
+                                        .If(call => call.InputType() != null &&
+                                                    call.InputType().GetInterfaces().Contains(typeof (IValidationModel)))
+                                        .TransferBy<HandlerModelDescriptor>();
+                                });
 
             Services(s =>
             {
@@ -105,6 +128,64 @@ namespace FubuMovies
 
             this.Extensions()
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
+        }
+    }
+
+    public class LoginBehaviour : IActionBehavior
+    {
+        private readonly IActionBehavior innerBehaviour;
+
+        public LoginBehaviour(IActionBehavior innerBehaviour)
+        {
+            this.innerBehaviour = innerBehaviour;
+        }
+
+        public void Invoke()
+        {
+            if ((string)HttpContext.Current.Session["user"] == "admin")
+            {
+                HttpContext.Current.User = new GenericPrincipal(new GenericIdentity("somebody"), new[] { "manager" });
+            }
+            innerBehaviour.Invoke();
+        }
+
+        public void InvokePartial()
+        {
+            innerBehaviour.InvokePartial();
+        }
+    }
+
+    public class HandlerModelDescriptor : IFubuContinuationModelDescriptor
+    {
+        private readonly BehaviorGraph _graph;
+
+        public HandlerModelDescriptor(BehaviorGraph graph)
+        {
+            _graph = graph;
+        }
+
+        public Type DescribeModelFor(ValidationFailure context)
+        {
+            // Remember, behavior chains can be identified by the input model type
+            // The IFubuContinuationModelDescriptor interface is used to describe the input model type of the chain
+            // that we want to transfer to
+
+            // we're going to query the BehaviorGraph to find the corresponding GET for the POST
+            // obviously, we'd need to make this smarter but this is just a simple example
+            var targetNamespace = context.Target.HandlerType.Namespace;
+            var getCall = _graph
+                .Behaviors
+                .Where(chain => chain.FirstCall() != null && chain.FirstCall().HandlerType.Namespace == targetNamespace
+                    && chain.Route.AllowedHttpMethods.Contains("GET"))
+                .Select(chain => chain.FirstCall())
+                .FirstOrDefault();
+
+            if (getCall == null)
+            {
+                return null;
+            }
+
+            return getCall.InputType();
         }
     }
 
@@ -141,23 +222,5 @@ namespace FubuMovies
             _innerBehaviour.InvokePartial();
         }
 
-    }
-
-    public class AuthorizationHandler : IAuthorizationFailureHandler
-    {
-        private readonly IOutputWriter _writer;
-        private readonly IUrlRegistry _registry;
-
-        public AuthorizationHandler(IOutputWriter writer, IUrlRegistry registry)
-        {
-            _writer = writer;
-            _registry = registry;
-        }
-
-        public void Handle()
-        {
-            string url = _registry.UrlFor(new LoginInputModel());
-            _writer.RedirectToUrl(url);
-        }
     }
 }

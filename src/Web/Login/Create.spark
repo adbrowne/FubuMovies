@@ -1,0 +1,22 @@
+﻿<use namespace="FubuMovies.Login"/>
+<viewdata model="FubuMovies.Login.LoginViewModel" />
+<content:title>
+  Login
+</content:title>
+<h1>Login</h1>
+<ValidationErrors />
+<Form model="LoginInputModel">
+  <div class="row">
+    <LabelFor property="Username" />
+    <InputFor property="Username" />
+  </div>
+  <div class="row">
+    <LabelFor property="Password" />
+    <InputFor property="Password" />
+  </div>
+  <div class="row row-submit">
+    <button type="submit">
+      <span>Login</span>
+    </button>
+  </div>
+</Form>

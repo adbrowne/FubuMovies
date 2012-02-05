@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure.Maps;
+using FubuValidation.StructureMap;
 using NHibernate;
 using NHibernate.ByteCode.Castle;
 using NHibernate.Cfg;
@@ -58,6 +59,7 @@ namespace FubuMovies.Infrastructure
             For<IUnitOfWork>().LifecycleIs(Lifecycles.GetLifecycle(InstanceScope.Hybrid))
                 .Use<UnitOfWork>();
 
+            this.FubuValidation();
             //ForRequestedType<IDatabaseBuilder>().TheDefaultIsConcreteType<DatabaseBuilder>();
         }
     }
