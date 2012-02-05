@@ -107,7 +107,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\scripts\backbone-min.js" />
+    <Content Include="Content\scripts\backbone.js" />
     <Content Include="Content\scripts\jquery.min.js" />
+    <Content Include="Content\scripts\underscore-min.js" />
+    <Content Include="Content\scripts\underscore.js" />
     <Content Include="Content\styles\bootstrap-responsive.css" />
     <Content Include="Content\styles\bootstrap-responsive.min.css" />
     <Content Include="Content\styles\bootstrap.css" />
