@@ -1,0 +1,24 @@
+﻿<use namespace="FubuMovies.Login"/>
+<viewdata model="FubuMovies.Admin.EditTimetableViewModel" />
+<content:title>
+  Movie Admin
+</content:title>
+<h1>Movie Admin</h1>
+
+<ignore>
+  <script type="text/template" id="movie-item-template">
+    <li>
+      Movie goes here: <%= Name %>
+    </li>
+  </script>
+</ignore>
+<div id="editor">
+  <ul id="movie-list">
+
+  </ul>
+</div>
+
+<Asset name="jquery" />
+<Asset name="underscore" />
+<Asset name="backbone" />
+<Asset name="schedule-editor" />

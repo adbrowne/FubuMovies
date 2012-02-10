@@ -2,12 +2,12 @@ using FubuMVC.Core.Security;
 
 namespace FubuMovies.Admin
 {
-    [AllowRole("manager")]
+    //[AllowRole("manager")]
     public class EditorController
     {
         public EditTimetableViewModel View(EditorInputModel inputModel)
         {
-            return new EditTimetableViewModel();
+            return new EditTimetableViewModel(); 
         }
     }
 

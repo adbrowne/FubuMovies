@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
+using FubuMVC.Core;
 using NHibernate;
 
 namespace FubuMovies.Api
@@ -16,13 +18,13 @@ namespace FubuMovies.Api
             _session = unitOfWork.CurrentSession;
         }
 
+        [Conneg]
         public MovieListViewModel List(MovieListInputModel input)
         {
-
-            return new MovieListViewModel
-                       {
-                           Items = _session.CreateCriteria<Movie>().List<Movie>()
-                       };
+            var movieListViewModel = new MovieListViewModel();
+            movieListViewModel.AddRange(_session.CreateCriteria<Movie>().List<Movie>().ToList());
+        
+            return movieListViewModel;
         }
 
         public MovieViewModel Get(MovieGetInputModel input)
@@ -118,8 +120,8 @@ namespace FubuMovies.Api
     {
     }
 
-    public class MovieListViewModel
+    public class MovieListViewModel : List<Movie>
     {
-        public IEnumerable<Movie> Items { get; set; }
+        
     }
 }

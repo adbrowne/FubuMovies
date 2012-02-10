@@ -213,7 +213,7 @@ namespace FubuMovies
             catch
             {
                 _unitOfWork.Rollback();
-                throw;
+                throw; 
             }
 
         }
