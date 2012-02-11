@@ -6,12 +6,17 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Timetable;
 using FubuMovies.Login;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Diagnostics;
 using FubuMVC.Core.Registration;
+using FubuMVC.Core.Registration.Conventions;
+using FubuMVC.Core.Registration.Nodes;
+using FubuMVC.Core.Registration.Routes;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
 using FubuMVC.Core.UI.Extensibility;
@@ -70,19 +75,23 @@ namespace FubuMovies
     {
         public FubuMoviesRegistry()
         {
+            IncludeDiagnostics(true);
             Applies
                 .ToThisAssembly();
 
             Actions
                 .IncludeClassesSuffixedWithController();
 
-            ApplyHandlerConventions();
+            Actions.IncludeType<ApiController<Movie>>();
+
+            ApplyHandlerConventions(); 
 
             Routes
                 .HomeIs<TimetableRequest>()
                 .IgnoreControllerNamespaceEntirely()
                 .IgnoreMethodSuffix("Command")
                 .IgnoreMethodSuffix("Query")
+                .UrlPolicy(new MyUrlPolicy())
                 .ConstrainToHttpMethod(action => action.Method.Name.EndsWith("Command"), "POST")
                 .ConstrainToHttpMethod(action => action.Method.Name.StartsWith("Index"), "GET")
                 .ConstrainToHttpMethod(action => action.Method.Name.ToLower() == "get", "GET")
@@ -122,12 +131,73 @@ namespace FubuMovies
             Services(s =>
             {
                 //s.FillType<IExceptionHandler, AsyncExceptionHandler>();
-                s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>();
+                s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>(); 
                 s.AddService<IAuthorizationFailureHandler, AuthorizationHandler>();
             });
 
             this.Extensions()
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
+        }
+    }
+
+    public class MyUrlPolicy : IUrlPolicy
+    {
+        //from: http://stackoverflow.com/questions/457676/c-sharp-reflection-check-if-a-class-is-derived-from-a-generic-class
+        static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+        {
+            while (toCheck != typeof(object))
+            {
+                var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+                if (generic == cur)
+                {
+                    return true;
+                }
+                toCheck = toCheck.BaseType;
+            }
+            return false;
+        }
+
+        static Type GetGenericParameter(Type generic)
+        {
+            return generic.GetGenericArguments()[0];
+        }
+
+        public bool Matches(ActionCall call, IConfigurationObserver log)
+        {
+            return IsSubclassOfRawGeneric(typeof(ApiController<>), call.HandlerType);
+        }
+
+        public IRouteDefinition Build(ActionCall call)
+        {
+            var entityType = GetGenericParameter(call.HandlerType);
+            var pluralName = GetPluralName(entityType);
+            if (call.Method.Name == "List")
+            {
+                var routeDefinition = call.ToRouteDefinition();
+                routeDefinition.Append("api");
+                routeDefinition.Append(pluralName);
+                routeDefinition.AddHttpMethodConstraint("GET");
+                return routeDefinition;
+            }
+            else if(call.Method.Name == "Add")
+            {
+                var routeDefinition = call.ToRouteDefinition();
+                routeDefinition.Append("api");
+                routeDefinition.Append(pluralName);
+                routeDefinition.AddHttpMethodConstraint("POST");
+                return routeDefinition;
+            }
+
+            throw new InvalidOperationException("Unknown method: " + call.Method.Name);
+        }
+
+        private static string GetPluralName(Type entityType)
+        {
+            foreach(var attrib in entityType.GetCustomAttributes(false).OfType<PluralAttribute>())
+            {
+                return attrib.Plural;
+            }
+            return entityType.Name;
         }
     }
 

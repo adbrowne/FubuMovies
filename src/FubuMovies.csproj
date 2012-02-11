@@ -13,6 +13,7 @@
     <RootNamespace>FubuMovies</RootNamespace>
     <AssemblyName>FubuMovies</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -133,6 +134,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiController.cs" />
     <Compile Include="Infrastructure\RoleProvider.cs" />
     <Compile Include="Web\Admin\EditorController.cs" />
     <Compile Include="Web\Api\MoviesController.cs" />
@@ -192,11 +194,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>22512</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/FubuMovies</IISUrl>
+          <IISUrl>http://localhost:22512/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -7,7 +7,7 @@
 
   var MovieCollection = new Backbone.Collection;
   MovieCollection.model = Movie;
-  MovieCollection.url = '../movies/list';
+  MovieCollection.url = '../api/movies';
   MovieCollection.fetch();
 
   var MovieView = Backbone.View.extend({
