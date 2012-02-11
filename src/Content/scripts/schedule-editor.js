@@ -22,15 +22,17 @@
   });
 
   var EditorView = Backbone.View.extend({
-    el: $('#movie-list-area'),
+    el: $('#editor'),
 
     render: function( event ){
       return this;
     },
     initialize: function(){
-        MovieCollection.bind('add', this.addOne, this);     
-        MovieCollection.bind('all', this.render, this);     
-        MovieCollection.bind('reset', this.addAll, this);     
+      this.new_name = this.$("#new-name");
+      this.new_description = this.$("#new-description");
+      MovieCollection.bind('add', this.addOne, this);     
+      MovieCollection.bind('all', this.render, this);     
+      MovieCollection.bind('reset', this.addAll, this);
     },
     addAll: function(){
       MovieCollection.each(this.addOne);
@@ -40,6 +42,15 @@
       $("#movie-list").append(view.render().el); 
     },
     events: {
+      "click #movie-add": "addMovie"
+    },
+    addMovie: function(e){
+      MovieCollection.create(
+        {
+          Name: this.new_name.val(),
+          Description: this.new_description.val()
+        });
+      console.log("adding movie");
     }
   });
 

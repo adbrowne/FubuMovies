@@ -16,6 +16,10 @@
   <ul id="movie-list">
 
   </ul>
+
+  Name: <input type="text" id="new-name"></input>
+  Description <textarea id="new-description"></textarea>
+  <button id="movie-add">Add</button>
 </div>
 
 <Asset name="jquery" />
