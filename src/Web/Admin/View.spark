@@ -7,12 +7,31 @@
 
 <ignore>
   <script type="text/template" id="movie-item-template">
-    <li>
-      Movie goes here: <%= Name %>
-    </li>
+      Movie: <%= Name %> <button class="add-session" movieId="<%= Id %>">Add Session</button>
   </script>
+
+  <script type="text/template" id="moviesession-item-template">
+      Movie Session: <%= Movie.Name %> <%= StartTime %>
+  </script>
+
+  <script type="text/template" id="moviesession-new-template">
+    
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal" >&times;</a>
+        <h3>Add Session</h3>
+      </div>
+      <div class="modal-body">
+        Start Time: <input type="text" id="new-session-time"></input>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-primary">Save changes</a>
+        <a href="#" class="btn" data-dismiss="modal" >Close</a>
+      </div>
+    
+   </script>
 </ignore>
 <div id="editor">
+  <p>Movie List</p>
   <ul id="movie-list">
 
   </ul>
@@ -20,6 +39,11 @@
   Name: <input type="text" id="new-name"></input>
   Description <textarea id="new-description"></textarea>
   <button id="movie-add">Add</button>
+
+  <p>Session List</p>
+  <ul id="movie-session-list">
+    
+  </ul>
 </div>
 
 <Asset name="jquery" />

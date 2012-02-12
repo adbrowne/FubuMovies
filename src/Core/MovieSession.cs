@@ -2,7 +2,8 @@
 
 namespace FubuMovies.Core
 {
-    public class MovieSession
+    [Plural("MovieSessions")]
+    public class MovieSession : IEntity
     {
         public virtual int Id { get; set; }
         public virtual Movie Movie { get; set; }

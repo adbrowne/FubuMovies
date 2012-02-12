@@ -6,6 +6,8 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using FubuCore;
+using FubuCore.Binding;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Timetable;
@@ -83,6 +85,7 @@ namespace FubuMovies
                 .IncludeClassesSuffixedWithController();
 
             Actions.IncludeType<ApiController<Movie>>();
+            Actions.IncludeType<ApiController<MovieSession>>();
 
             ApplyHandlerConventions(); 
 
@@ -96,6 +99,10 @@ namespace FubuMovies
                 .ConstrainToHttpMethod(action => action.Method.Name.StartsWith("Index"), "GET")
                 .ConstrainToHttpMethod(action => action.Method.Name.ToLower() == "get", "GET")
                 .ConstrainToHttpMethod(action => action.Method.Name.ToLower() == "post", "POST");
+
+
+            Models
+                .BindModelsWith<EntityModelBinder>();
 
             Actions.IncludeTypes(t => t.Name.EndsWith("Handler")).IgnoreMethodsDeclaredBy<AuthorizationHandler>();
 
@@ -137,6 +144,33 @@ namespace FubuMovies
 
             this.Extensions()
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
+        }
+    }
+
+    public class EntityModelBinder : IModelBinder
+    {
+        public bool Matches(Type type)
+        {
+            return type.CanBeCastTo<IEntity>();
+        }
+
+        public void Bind(Type type, object instance, IBindingContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Bind(Type type, IBindingContext context)
+        {
+            var entity = context.ValueAs(type, "Id");
+
+            if (entity != null) return entity;
+
+            if (type.IsConcrete())
+            {
+                return Activator.CreateInstance(type);
+            }
+
+            return null;
         }
     }
 

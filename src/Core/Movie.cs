@@ -3,13 +3,17 @@
 namespace FubuMovies.Core
 {
     [Plural("Movies")]
-    public class Movie
+    public class Movie : IEntity
     {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
 
  
+    }
+
+    public interface IEntity
+    {
     }
 
     public class PluralAttribute : Attribute
