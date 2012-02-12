@@ -146,10 +146,10 @@ namespace FubuMovies
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
         }
     }
-
+    
     public class EntityModelBinder : IModelBinder
     {
-        public bool Matches(Type type)
+        public bool Matches(Type type)  
         {
             return type.CanBeCastTo<IEntity>();
         }

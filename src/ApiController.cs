@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMVC.Core;
 using NHibernate;
@@ -9,7 +10,7 @@ using NHibernate;
 namespace FubuMovies
 {
     [Conneg]
-    public class ApiController<T> where T : class
+    public class ApiController<T> where T : class, IEntity
     {
         private ISession session;
 
@@ -34,8 +35,14 @@ namespace FubuMovies
         }
     }
 
-    public class AddInputModel<T>
+    public class AddInputModel<T> : JsonMessage
+        where T: IEntity
     {
+        public AddInputModel()
+        {
+            
+        }
+        
         public T Entity { get; set; }
     }
 
