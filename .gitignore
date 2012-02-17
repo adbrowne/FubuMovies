@@ -4,3 +4,5 @@ _Resharper.*
 *.user
 *.suo
 src/fubu-content/fubumvc-diagnostics/
+*.swp
+*~
