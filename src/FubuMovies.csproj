@@ -135,6 +135,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiController.cs" />
+    <Compile Include="Infrastructure\IViewModel.cs" />
+    <Compile Include="Web\Api\MovieListInputModel.cs" />
+    <Compile Include="Web\Api\MovieViewModel.cs" />
+    <Compile Include="Web\Mapping\MovieModelMapper.cs" />
     <Compile Include="Infrastructure\RoleProvider.cs" />
     <Compile Include="Web\Admin\EditorController.cs" />
     <Compile Include="Web\Api\MoviesController.cs" />
@@ -151,6 +155,7 @@
     <Compile Include="Infrastructure\NHibernateRegistry.cs" />
     <Compile Include="Web\Login\LoginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Mapping\MovieViewModel.cs" />
     <Compile Include="Web\Timetable\TimetableController.cs" />
   </ItemGroup>
   <ItemGroup>

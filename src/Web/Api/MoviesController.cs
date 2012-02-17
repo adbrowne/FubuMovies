@@ -112,14 +112,6 @@ namespace FubuMovies.Api
 
     }
 
-    public class MovieViewModel :BaseMovieModelWithId
-    {
-    }
-
-    public class MovieListInputModel
-    {
-    }
-
     public class MovieListViewModel : List<Movie>
     {
         

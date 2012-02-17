@@ -7,11 +7,11 @@
 
 <ignore>
   <script type="text/template" id="movie-item-template">
-      Movie: <%= Name %> <button class="add-session" movieId="<%= Id %>">Add Session</button>
+      Movie: <%= Name %> <button class="add-session">Add Session</button>
   </script>
 
   <script type="text/template" id="moviesession-item-template">
-      Movie Session: <%= Movie.Name %> <%= StartTime %>
+      Movie Session: <%= MovieName %> <%= StartTime %>
   </script>
 
   <script type="text/template" id="moviesession-new-template">

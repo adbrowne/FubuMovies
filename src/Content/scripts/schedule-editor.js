@@ -54,7 +54,8 @@
 	MovieSessionCollection.create(
         {
           StartTime: view.startTime.val(),
-	  Movie: view.movie
+	  MovieName: view.model.MovieName,
+	  MovieId: view.model.MovieId 
         });
 	console.log("inline saveSession");		   
       });
@@ -77,13 +78,15 @@
     },
     
     addSession: function(e){
-      var button = $(e.target);
-      var movieId = button.attr("movieId");
-      //var newModal = this.new_template();
+      var movieId = this.model.get("Id");
 
-      // $(newModal).modal();
-      var newSessionView = new NewSessionView();
-      newSessionView.movie = this.model.attributes;
+      var newSessionView = new NewSessionView({
+	model: {
+	  MovieName: this.model.get("Name"),
+	  MovieId: this.model.get("Id")
+	}
+      });
+
       var el = newSessionView.render().el;
       $(el).modal();
       console.log("Movie id: " + movieId);

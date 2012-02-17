@@ -1,38 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
+using FubuMovies.Web.Mapping;
 using FubuMVC.Core;
 using NHibernate;
 
 namespace FubuMovies
 {
     [Conneg]
-    public class ApiController<T> where T : class, IEntity
+    public class ApiController<TEntity, TViewModel> where TEntity : class, IEntity
     {
-        private ISession session;
+        private readonly IModelMapper<TEntity, TViewModel> mapper;
+        private readonly ISession session;
 
-        public ApiController(IUnitOfWork unitOfWork)
+        public ApiController(IUnitOfWork unitOfWork, IModelMapper<TEntity, TViewModel> mapper)
         {
+            this.mapper = mapper;
             session = unitOfWork.CurrentSession;
         }
 
-        public ListViewModel<T> List(ListInputModel<T> input)
+        public IEnumerable<TViewModel> List(ListInputModel<TEntity> input)
         {
-            var listViewModel  = new ListViewModel<T>();
-            listViewModel.AddRange(session.CreateCriteria<T>().SetFetchMode("Movie", FetchMode.Eager).List<T>().ToList());
-
-            return listViewModel;
+            var items = session.CreateCriteria<TEntity>().List<TEntity>();
+            return items.Select(x => mapper.GetViewModel(x));
         }
 
-        public AddViewModel<T> Add(T input)
+        public AddViewModel<TEntity> Add(TViewModel input)
         {
-            session.Save(input);
+            var entity = mapper.GetEntity(input);
+            session.Save(entity);
 
-            return new AddViewModel<T>();
+            return new AddViewModel<TEntity>();
         }
+    }
+
+    public interface IModelMapper<TEntity, TViewModel>
+    {
+        TViewModel GetViewModel(TEntity entity);
+        TEntity GetEntity(TViewModel viewModel);
     }
 
     public class AddInputModel<T> : JsonMessage

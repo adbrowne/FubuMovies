@@ -12,6 +12,7 @@ using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Timetable;
 using FubuMovies.Login;
+using FubuMovies.Web.Mapping;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Diagnostics;
@@ -84,8 +85,8 @@ namespace FubuMovies
             Actions
                 .IncludeClassesSuffixedWithController();
 
-            Actions.IncludeType<ApiController<Movie>>();
-            Actions.IncludeType<ApiController<MovieSession>>();
+            Actions.IncludeType<ApiController<Movie, MovieViewModel>>();
+            Actions.IncludeType<ApiController<MovieSession, MovieSessionViewModel>>();
 
             ApplyHandlerConventions(); 
 
@@ -198,7 +199,7 @@ namespace FubuMovies
 
         public bool Matches(ActionCall call, IConfigurationObserver log)
         {
-            return IsSubclassOfRawGeneric(typeof(ApiController<>), call.HandlerType);
+            return IsSubclassOfRawGeneric(typeof(ApiController<,>), call.HandlerType);
         }
 
         public IRouteDefinition Build(ActionCall call)
