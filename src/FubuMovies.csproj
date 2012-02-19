@@ -138,6 +138,10 @@
     <Compile Include="Infrastructure\IViewModel.cs" />
     <Compile Include="Web\Api\MovieListInputModel.cs" />
     <Compile Include="Web\Api\MovieViewModel.cs" />
+    <Compile Include="Web\HandlersMarker.cs" />
+    <Compile Include="Infrastructure\AuthenticationService.cs" />
+    <Compile Include="Web\Login\GetHandler.cs" />
+    <Compile Include="Infrastructure\IAuthenticationService.cs" />
     <Compile Include="Web\Mapping\MovieModelMapper.cs" />
     <Compile Include="Infrastructure\RoleProvider.cs" />
     <Compile Include="Web\Admin\EditorController.cs" />
@@ -153,7 +157,7 @@
     <Compile Include="Infrastructure\Maps\MovieSessionMap.cs" />
     <Compile Include="Infrastructure\NHibernateConfiguration.cs" />
     <Compile Include="Infrastructure\NHibernateRegistry.cs" />
-    <Compile Include="Web\Login\LoginHandler.cs" />
+    <Compile Include="Web\Login\PostHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Mapping\MovieViewModel.cs" />
     <Compile Include="Web\Timetable\TimetableController.cs" />
@@ -185,7 +189,7 @@
     <Content Include="Web\Api\List.spark" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web\Login\Create.spark" />
+    <Content Include="Web\Login\Login.spark" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Shared\Notification.spark" />

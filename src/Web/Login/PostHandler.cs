@@ -1,23 +1,19 @@
-using System.Web;
 using FubuMovies.Admin;
 using FubuMVC.Core.Continuations;
 using FubuValidation;
 
 namespace FubuMovies.Login
 {
-    public class LoginHandler
+    public class PostHandler
     {
         private readonly IAuthenticationService authenticationService;
 
-        public LoginHandler(IAuthenticationService authenticationService)
+        public PostHandler(IAuthenticationService authenticationService)
         {
             this.authenticationService = authenticationService;
         }
 
-        public LoginViewModel Get(LoginIndexInputModel indexInputModel)
-        {
-            return new LoginViewModel();
-        }
+        
 
         public FubuContinuation Post(LoginInputModel inputModel)
         {
@@ -36,31 +32,6 @@ namespace FubuMovies.Login
         }
 
         
-    }
-
-    public interface IAuthenticationService
-    {
-        bool Authenticate(string username, string password);
-    }
-
-    class AuthenticationService : IAuthenticationService
-    {
-        private readonly HttpContextBase httpContext;
-
-        public AuthenticationService(HttpContextBase httpContext)
-        {
-            this.httpContext = httpContext;
-        }
-
-        public bool Authenticate(string username, string password)
-        {
-            var authenticated = (username == "admin" && password == "admin");
-            if(authenticated)
-            {
-                httpContext.Session["user"] = "admin";
-            }
-            return authenticated;
-        }
     }
 
     public class LoginInputModel : IValidationModel
