@@ -1,11 +1,12 @@
 ﻿using System;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
+using FubuMovies.Web.Api;
 using FubuValidation;
 
 namespace FubuMovies.Web.Mapping
 {
-    public class MovieViewModel : IViewModel<Movie>
+    public class MovieViewModel : IViewModel<Movie>, IViewModel
     {
         public int Id { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
+using FubuMovies.Web.Api;
 using NHibernate;
 
 namespace FubuMovies.Web.Mapping

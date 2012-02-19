@@ -8,11 +8,13 @@ using System.Web.Security;
 using System.Web.SessionState;
 using FubuCore;
 using FubuCore.Binding;
+using FubuMovies.Api;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Login;
 using FubuMovies.Timetable;
 using FubuMovies.Web;
+using FubuMovies.Web.Api;
 using FubuMovies.Web.Mapping;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
@@ -32,6 +34,7 @@ using FubuMVC.Validation;
 using FubuValidation;
 using HtmlTags;
 using StructureMap;
+using MovieViewModel = FubuMovies.Web.Mapping.MovieViewModel;
 
 namespace FubuMovies
 {
@@ -251,6 +254,15 @@ namespace FubuMovies
                 routeDefinition.Append("api");
                 routeDefinition.Append(pluralName);
                 routeDefinition.AddHttpMethodConstraint("POST");
+                return routeDefinition;
+            }
+            else if (call.Method.Name == "Get")
+            {
+                var routeDefinition = call.ToRouteDefinition();
+                routeDefinition.Append("api");
+                routeDefinition.Append(pluralName);
+                routeDefinition.Append("{Id}");
+                routeDefinition.AddHttpMethodConstraint("GET");
                 return routeDefinition;
             }
 

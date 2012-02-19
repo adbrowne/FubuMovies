@@ -1,9 +1,11 @@
 using System;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using FubuMovies.Api;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure.Maps;
 using FubuMovies.Infrastructure;
+using FubuMovies.Web.Api;
 using FubuMovies.Web.Mapping;
 using FubuValidation.StructureMap;
 using NHibernate;
@@ -15,6 +17,7 @@ using StructureMap;
 using StructureMap.Configuration.DSL;
 using StructureMap.Pipeline;
 using Environment = NHibernate.Cfg.Environment;
+using MovieViewModel = FubuMovies.Web.Mapping.MovieViewModel;
 
 
 namespace FubuMovies.Infrastructure

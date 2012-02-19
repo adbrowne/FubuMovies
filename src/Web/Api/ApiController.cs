@@ -3,11 +3,28 @@ using System.Linq;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMVC.Core;
+using FubuMVC.Core.View;
 using NHibernate;
+using NHibernate.Criterion;
 
-namespace FubuMovies
+namespace FubuMovies.Web.Api
 {
-    [Conneg]
+    public interface IViewModel
+    {
+        int Id { get; set; }
+    }
+    public static class ViewHelpers
+    {
+        public static GetByIdInputModel<TViewModel> GetInputModel<TViewModel>(this IFubuPage page, TViewModel model) where TViewModel : IViewModel
+        {
+            var getByIdInputModel = new GetByIdInputModel<TViewModel>
+                                        {
+                                            Id = model.Id
+                                        };
+            return getByIdInputModel;
+        }
+    }
+    [Conneg(FormatterOptions.Json | FormatterOptions.Html)]
     public class ApiController<TEntity, TViewModel> where TEntity : class, IEntity
     {
         private readonly IModelMapper<TEntity, TViewModel> mapper;
@@ -19,10 +36,16 @@ namespace FubuMovies
             session = unitOfWork.CurrentSession;
         }
 
-        public IEnumerable<TViewModel> List(ListInputModel<TEntity> input)
+        public List<TViewModel> List(ListInputModel<TEntity> input)
         {
             var items = session.CreateCriteria<TEntity>().List<TEntity>();
-            return items.Select(x => mapper.GetViewModel(x));
+            return items.Select(x => mapper.GetViewModel(x)).ToList();
+        }
+
+        public TViewModel Get(GetByIdInputModel<TViewModel> input)
+        {
+            var item = session.CreateCriteria<TEntity>().Add(Restrictions.IdEq(input.Id)).UniqueResult<TEntity>();
+            return mapper.GetViewModel(item);
         }
 
         public TViewModel Add(TViewModel input)
@@ -32,6 +55,11 @@ namespace FubuMovies
 
             return mapper.GetViewModel(entity);
         }
+    }
+
+    public class GetByIdInputModel<TEntity>
+    {
+        public int Id { get; set; }
     }
 
     public interface IModelMapper<TEntity, TViewModel>

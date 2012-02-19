@@ -1,2 +1,3 @@
 ﻿<use namespace="FubuMovies.Api"/>
 <use namespace="System.Linq"/>
+<use namespace="FubuMovies.Web.Api"/>

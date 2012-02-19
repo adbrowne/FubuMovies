@@ -1,0 +1,7 @@
+﻿<viewdata model="FubuMovies.Web.Mapping.MovieViewModel" />
+<content:title>
+   Movies
+</content:title>
+<h1>Movies</h1>
+
+    <p>${Model.Name}</p>
