@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace FubuMovies.Login
+namespace FubuMovies.Infrastructure
 {
     class AuthenticationService : IAuthenticationService
     {

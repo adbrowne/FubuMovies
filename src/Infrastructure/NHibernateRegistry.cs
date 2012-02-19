@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure.Maps;
+using FubuMovies.Infrastructure;
 using FubuMovies.Web.Mapping;
 using FubuValidation.StructureMap;
 using NHibernate;
@@ -60,10 +61,13 @@ namespace FubuMovies.Infrastructure
             For<IUnitOfWork>().LifecycleIs(Lifecycles.GetLifecycle(InstanceScope.Hybrid))
                 .Use<UnitOfWork>();
 
+            For<IAuthenticationService>().Use<AuthenticationService>();
             this.FubuValidation();
 
             For<IModelMapper<Movie, MovieViewModel>>().Use<MovieModelMapper>();
             For<IModelMapper<MovieSession, MovieSessionViewModel>>().Use<MovieSessionModelMapper>();
+
+
             //ForRequestedType<IDatabaseBuilder>().TheDefaultIsConcreteType<DatabaseBuilder>();
         }
     }

@@ -142,6 +142,10 @@
     <Compile Include="Infrastructure\AuthenticationService.cs" />
     <Compile Include="Web\Login\GetHandler.cs" />
     <Compile Include="Infrastructure\IAuthenticationService.cs" />
+    <Compile Include="Infrastructure\IValidationModel.cs" />
+    <Compile Include="Web\Login\LoginInputModel.cs" />
+    <Compile Include="Web\Login\LoginSubmitInputModel.cs" />
+    <Compile Include="Web\Login\LoginViewModel.cs" />
     <Compile Include="Web\Mapping\MovieModelMapper.cs" />
     <Compile Include="Infrastructure\RoleProvider.cs" />
     <Compile Include="Web\Admin\EditorController.cs" />

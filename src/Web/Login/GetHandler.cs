@@ -1,8 +1,8 @@
-namespace FubuMovies.Login
+namespace FubuMovies.Infrastructure
 {
     public class GetHandler
     {
-        public LoginViewModel get_handler(LoginIndexInputModel indexInputModel)
+        public LoginViewModel get_handler(LoginInputModel inputModel)
         {
             return new LoginViewModel();
         }

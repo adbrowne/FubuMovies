@@ -1,4 +1,4 @@
-﻿using FubuMovies.Login;
+﻿using FubuMovies.Infrastructure;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Urls;
@@ -18,7 +18,7 @@ namespace FubuMovies.Infrastructure
 
         public void Handle()
         {
-            string url = _registry.UrlFor(new LoginIndexInputModel());
+            string url = _registry.UrlFor(new LoginInputModel());
             _writer.RedirectToUrl(url);
         }
     }

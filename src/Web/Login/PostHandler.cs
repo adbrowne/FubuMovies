@@ -1,8 +1,7 @@
 using FubuMovies.Admin;
 using FubuMVC.Core.Continuations;
-using FubuValidation;
 
-namespace FubuMovies.Login
+namespace FubuMovies.Infrastructure
 {
     public class PostHandler
     {
@@ -15,10 +14,10 @@ namespace FubuMovies.Login
 
         
 
-        public FubuContinuation Post(LoginInputModel inputModel)
+        public FubuContinuation Post(LoginSubmitInputModel submitInputModel)
         {
-            var username = inputModel.Username;
-            var password = inputModel.Password;
+            var username = submitInputModel.Username;
+            var password = submitInputModel.Password;
             var authenticated = authenticationService.Authenticate(username, password);
 
             if (authenticated)
@@ -27,32 +26,10 @@ namespace FubuMovies.Login
             }
             else
             {
-                return FubuContinuation.TransferTo(new LoginIndexInputModel());
+                return FubuContinuation.TransferTo(new LoginInputModel());
             }
         }
 
         
-    }
-
-    public class LoginInputModel : IValidationModel
-    {
-        [Required]
-        public string Username { get; set; }
-        [Required]
-        public string Password { get; set; }
-    }
-
-    public interface IValidationModel
-    {
-    }
-
-    public class LoginIndexInputModel
-    {
-    }
-
-    public class LoginViewModel
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
     }
 }

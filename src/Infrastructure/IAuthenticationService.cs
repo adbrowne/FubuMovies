@@ -1,4 +1,4 @@
-﻿namespace FubuMovies.Login
+﻿namespace FubuMovies.Infrastructure
 {
     public interface IAuthenticationService
     {

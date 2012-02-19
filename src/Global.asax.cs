@@ -11,7 +11,6 @@ using FubuCore.Binding;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Timetable;
-using FubuMovies.Login;
 using FubuMovies.Web;
 using FubuMovies.Web.Mapping;
 using FubuMVC.Core;
