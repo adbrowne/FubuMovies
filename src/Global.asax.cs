@@ -8,6 +8,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using FubuCore;
 using FubuCore.Binding;
+using FubuCore.Reflection;
 using FubuMovies.Api;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
@@ -258,10 +259,11 @@ namespace FubuMovies
             }
             else if (call.Method.Name == "Get")
             {
-                var routeDefinition = call.ToRouteDefinition();
+                var routeDefinition = call.ToRouteDefinition(); 
                 routeDefinition.Append("api");
                 routeDefinition.Append(pluralName);
-                routeDefinition.Append("{Id}");
+                
+                routeDefinition.Input.AddRouteInput(new RouteParameter(new SingleProperty(call.InputType().GetProperty("Id"))), true);
                 routeDefinition.AddHttpMethodConstraint("GET");
                 return routeDefinition;
             }
