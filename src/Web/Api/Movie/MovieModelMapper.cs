@@ -61,7 +61,7 @@ namespace FubuMovies.Web.Mapping
         }
     }
 
-    public class MovieSessionViewModel : IViewModel<MovieSession>
+    public class MovieSessionViewModel : IViewModel<MovieSession>, IViewModel
     {
         public int MovieId { get; set; }
 
@@ -71,4 +71,6 @@ namespace FubuMovies.Web.Mapping
 
         public int Id { get; set; }
     }
+
+    public class MovieSessionUpdateModel : MovieSessionViewModel { }
 }

@@ -23,9 +23,17 @@ namespace FubuMovies.Web.Api
                                         };
             return getByIdInputModel;
         }
+
+        public static TUpdateModel GetUpdateModel<TViewModel, TUpdateModel>(this IFubuPage page, TViewModel model) where TViewModel : IViewModel where TUpdateModel : IViewModel, new()
+        {
+           return new TUpdateModel
+                      {
+                          Id = model.Id
+                      };
+        }
     }
     [Conneg(FormatterOptions.Json | FormatterOptions.Html)]
-    public class ApiController<TEntity, TViewModel> where TEntity : class, IEntity
+    public class ApiController<TEntity, TViewModel, TUpdateModel> where TEntity : class, IEntity where TViewModel: IViewModel where TUpdateModel : TViewModel
     {
         private readonly IModelMapper<TEntity, TViewModel> mapper;
         private readonly ISession session;
@@ -47,6 +55,16 @@ namespace FubuMovies.Web.Api
             var item = session.CreateCriteria<TEntity>().Add(Restrictions.IdEq(input.Id)).UniqueResult<TEntity>();
             return mapper.GetViewModel(item);
         }
+
+        public TViewModel Update(TUpdateModel input)
+        {
+            //var item = session.CreateCriteria<TEntity>().Add(Restrictions.IdEq(input.Id)).UniqueResult<TEntity>();
+
+            var entity = mapper.GetEntity(input);
+            session.Update(entity);
+            return mapper.GetViewModel(entity);
+        }
+
 
         public TViewModel Add(TViewModel input)
         {

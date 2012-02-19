@@ -4,4 +4,18 @@
 </content:title>
 <h1>Movies</h1>
 
-    <p>${Model.Name}</p>
+!{this.FormFor(this.GetUpdateModel<FubuMovies.Web.Mapping.MovieViewModel, FubuMovies.Web.Mapping.MovieUpdateModel>(Model))}
+  <div class="row">
+    <LabelFor property="Name" />
+    <InputFor property="Name" />
+  </div>
+  <div class="row">
+    <LabelFor property="Description" />
+    <InputFor property="Description" />
+  </div>
+  <div class="row row-submit">
+    <button type="submit">
+      <span>Save Movie</span>
+    </button>
+  </div>
+</Form>
