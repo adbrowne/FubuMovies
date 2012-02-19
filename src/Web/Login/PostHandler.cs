@@ -13,11 +13,12 @@ namespace FubuMovies.Login
             this.authenticationService = authenticationService;
         }
 
-        public FubuContinuation Post(LoginSubmitInputModel submitInputModel)
+        public FubuContinuation Post(LoginSubmitInputModel input)
         {
-            var username = submitInputModel.Username;
-            var password = submitInputModel.Password;
-            var authenticated = authenticationService.Authenticate(username, password);
+            var authenticated = authenticationService.Authenticate(
+                input.Username, 
+                input.Password
+            );
 
             if (authenticated)
             {
