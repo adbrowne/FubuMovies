@@ -1,7 +1,5 @@
-using System.Security.Principal;
 using System.Web;
 using FubuMovies.Admin;
-using FubuMovies.Timetable;
 using FubuMVC.Core.Continuations;
 using FubuValidation;
 
@@ -9,6 +7,13 @@ namespace FubuMovies.Login
 {
     public class LoginHandler
     {
+        private readonly IAuthenticationService authenticationService;
+
+        public LoginHandler(IAuthenticationService authenticationService)
+        {
+            this.authenticationService = authenticationService;
+        }
+
         public LoginViewModel Get(LoginIndexInputModel indexInputModel)
         {
             return new LoginViewModel();
@@ -16,17 +21,45 @@ namespace FubuMovies.Login
 
         public FubuContinuation Post(LoginInputModel inputModel)
         {
-            var authenticated = (inputModel.Username == "admin" && inputModel.Password == "admin");
+            var username = inputModel.Username;
+            var password = inputModel.Password;
+            var authenticated = authenticationService.Authenticate(username, password);
 
             if (authenticated)
             {
-                HttpContext.Current.Session["user"] = "admin";
                 return FubuContinuation.RedirectTo(new EditorInputModel());
             }
             else
             {
                 return FubuContinuation.TransferTo(new LoginIndexInputModel());
             }
+        }
+
+        
+    }
+
+    public interface IAuthenticationService
+    {
+        bool Authenticate(string username, string password);
+    }
+
+    class AuthenticationService : IAuthenticationService
+    {
+        private readonly HttpContextBase httpContext;
+
+        public AuthenticationService(HttpContextBase httpContext)
+        {
+            this.httpContext = httpContext;
+        }
+
+        public bool Authenticate(string username, string password)
+        {
+            var authenticated = (username == "admin" && password == "admin");
+            if(authenticated)
+            {
+                httpContext.Session["user"] = "admin";
+            }
+            return authenticated;
         }
     }
 

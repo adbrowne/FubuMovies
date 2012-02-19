@@ -22,12 +22,14 @@ using FubuMVC.Core.Registration.Nodes;
 using FubuMVC.Core.Registration.Routes;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
+using FubuMVC.Core.UI;
 using FubuMVC.Core.UI.Extensibility;
 using FubuMVC.Core.Urls;
 using FubuMVC.Spark;
 using FubuMVC.StructureMap;
 using FubuMVC.Validation;
 using FubuValidation;
+using HtmlTags;
 using StructureMap;
 
 namespace FubuMovies
@@ -120,7 +122,9 @@ namespace FubuMovies
                 .TryToAttachViewsInPackages()
                 .RegisterActionLessViews(t => t.ViewModelType == typeof(Notification));
 
-            //HtmlConvention<SampleHtmlConventions>();
+            
+            HtmlConvention<MyPasswordConvention>();
+            HtmlConvention<MyLoginFormConvention>();
 
             this.Validation(validation =>
                                 {
@@ -147,7 +151,32 @@ namespace FubuMovies
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
         }
     }
-    
+
+    public class MyLoginFormConvention : HtmlConventionRegistry
+    {
+        public MyLoginFormConvention()
+        {
+            Editors.If(x => x.ModelType.Equals(typeof(LoginViewModel))).AddClass("login");
+        }
+    }
+
+    public class MyPasswordConvention : HtmlConventionRegistry
+    {
+        public MyPasswordConvention()
+        {
+            Editors
+                .If(x => x.Accessor.Name == "Password")
+                .BuildBy(
+                    builder => NewPasswordElement()
+                );
+        }
+
+        private static HtmlTag NewPasswordElement()
+        {
+            return new HtmlTag("input").Attr("type","password");
+        }
+    }
+
     public class EntityModelBinder : IModelBinder
     {
         public bool Matches(Type type)  
