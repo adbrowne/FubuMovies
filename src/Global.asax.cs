@@ -10,6 +10,7 @@ using FubuCore;
 using FubuCore.Binding;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
+using FubuMovies.Login;
 using FubuMovies.Timetable;
 using FubuMovies.Web;
 using FubuMovies.Web.Mapping;

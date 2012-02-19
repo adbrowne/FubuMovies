@@ -1,4 +1,5 @@
 ﻿using FubuMovies.Infrastructure;
+using FubuMovies.Login;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Urls;

@@ -1,4 +1,4 @@
-﻿namespace FubuMovies.Infrastructure
+﻿namespace FubuMovies.Login
 {
     public class LoginInputModel
     {
