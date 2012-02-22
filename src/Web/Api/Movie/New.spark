@@ -1,10 +1,10 @@
-﻿<viewdata model="FubuMovies.Api.MovieViewModel" />
+﻿<viewdata model="FubuMovies.Web.Mapping.MovieNewModel" />
 <content:title>
-  Edit Movie
+   Movies
 </content:title>
-<h1>Edit Movie</h1>
-<Form model="MovieUpdateInputModel">
-  <InputFor property="Id" />
+<h1>Movies</h1>
+
+<Form model="MovieViewModel">
   <div class="row">
     <LabelFor property="Name" />
     <InputFor property="Name" />
@@ -15,7 +15,7 @@
   </div>
   <div class="row row-submit">
     <button type="submit">
-      <span>Save Movie</span>
+      <span>Add Movie</span>
     </button>
   </div>
 </Form>

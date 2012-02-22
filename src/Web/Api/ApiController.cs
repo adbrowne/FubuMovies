@@ -33,7 +33,7 @@ namespace FubuMovies.Web.Api
         }
     }
     [Conneg(FormatterOptions.Json | FormatterOptions.Html)]
-    public class ApiController<TEntity, TViewModel, TUpdateModel> where TEntity : class, IEntity where TViewModel: IViewModel where TUpdateModel : TViewModel
+    public class ApiController<TEntity, TViewModel, TUpdateModel, TNewViewModel> where TEntity : class, IEntity where TViewModel: IViewModel, new() where TUpdateModel : TViewModel where TNewViewModel : TViewModel, new()
     {
         private readonly IModelMapper<TEntity, TViewModel> mapper;
         private readonly ISession session;
@@ -48,6 +48,11 @@ namespace FubuMovies.Web.Api
         {
             var items = session.CreateCriteria<TEntity>().List<TEntity>();
             return items.Select(x => mapper.GetViewModel(x)).ToList();
+        }
+
+        public TNewViewModel New(NewInputModel<TEntity> input)
+        {
+            return new TNewViewModel();
         }
 
         public TViewModel Get(GetByIdInputModel<TViewModel> input)
@@ -73,6 +78,14 @@ namespace FubuMovies.Web.Api
 
             return mapper.GetViewModel(entity);
         }
+    }
+
+    public class NewViewModel<T>
+    {
+    }
+
+    public class NewInputModel<T>
+    {
     }
 
     public class GetByIdInputModel<TEntity>

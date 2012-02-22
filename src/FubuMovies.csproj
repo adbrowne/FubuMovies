@@ -136,8 +136,6 @@
   <ItemGroup>
     <Compile Include="Web\Api\ApiController.cs" />
     <Compile Include="Infrastructure\IViewModel.cs" />
-    <Compile Include="Web\Movies\MovieListInputModel.cs" />
-    <Compile Include="Web\Movies\MovieViewModel.cs" />
     <Compile Include="Web\HandlersMarker.cs" />
     <Compile Include="Infrastructure\AuthenticationService.cs" />
     <Compile Include="Web\Login\GetHandler.cs" />
@@ -149,7 +147,6 @@
     <Compile Include="Web\Api\Movie\MovieModelMapper.cs" />
     <Compile Include="Infrastructure\RoleProvider.cs" />
     <Compile Include="Web\Admin\EditorController.cs" />
-    <Compile Include="Web\Movies\MoviesController.cs" />
     <Compile Include="Infrastructure\AuthorizationHandler.asax.cs" />
     <Compile Include="Core\Movie.cs" />
     <Compile Include="Data\MovieRepository.cs" />
@@ -178,19 +175,10 @@
     <Content Include="Web\Timetable\View.spark" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web\Movies\Edit.spark" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="fubu-content\fubumvc-diagnostics.zip" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web\Movies\Create.spark" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Shared\_global.spark" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web\Movies\List.spark" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web\Login\Login.spark" />
@@ -205,7 +193,14 @@
     <Content Include="Web\Api\Movie\List.spark" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web\Api\Movie\Edit.spark" />
+    <Content Include="Web\Api\Movie\Edit.spark">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web\Api\Movie\New.spark">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

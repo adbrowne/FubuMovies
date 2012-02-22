@@ -17,4 +17,5 @@ namespace FubuMovies.Web.Mapping
     }
 
     public class MovieUpdateModel : MovieViewModel { }
+    public class MovieNewModel : MovieViewModel { }
 }

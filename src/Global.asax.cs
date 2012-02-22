@@ -9,7 +9,6 @@ using System.Web.SessionState;
 using FubuCore;
 using FubuCore.Binding;
 using FubuCore.Reflection;
-using FubuMovies.Api;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Login;
@@ -92,8 +91,8 @@ namespace FubuMovies
             Actions
                 .IncludeClassesSuffixedWithController();
 
-            Actions.IncludeType<ApiController<Movie, MovieViewModel, MovieUpdateModel>>();
-            Actions.IncludeType<ApiController<MovieSession, MovieSessionViewModel, MovieSessionUpdateModel>>();
+            Actions.IncludeType<ApiController<Movie, MovieViewModel, MovieUpdateModel, MovieNewModel>>();
+            Actions.IncludeType<ApiController<MovieSession, MovieSessionViewModel, MovieSessionUpdateModel, MovieSessionNewModel>>();
 
             ApplyHandlerConventions(); 
 
@@ -225,7 +224,7 @@ namespace FubuMovies
                 toCheck = toCheck.BaseType;
             }
             return false;
-        }
+        } 
 
         static Type GetGenericParameter(Type generic)
         {
@@ -234,14 +233,23 @@ namespace FubuMovies
 
         public bool Matches(ActionCall call, IConfigurationObserver log)
         {
-            return IsSubclassOfRawGeneric(typeof(ApiController<,,>), call.HandlerType);
+            return IsSubclassOfRawGeneric(typeof(ApiController<,,,>), call.HandlerType);
         }
 
         public IRouteDefinition Build(ActionCall call)
         {
             var entityType = GetGenericParameter(call.HandlerType);
             var pluralName = GetPluralName(entityType);
-            if (call.Method.Name == "List")
+            if (call.Method.Name == "New")
+            {
+                var routeDefinition = call.ToRouteDefinition();
+                routeDefinition.Append("api");
+                routeDefinition.Append(pluralName);
+                routeDefinition.Append("new");
+                routeDefinition.AddHttpMethodConstraint("GET");
+                return routeDefinition;
+            }
+            else if (call.Method.Name == "List")
             {
                 var routeDefinition = call.ToRouteDefinition();
                 routeDefinition.Append("api");
@@ -257,6 +265,7 @@ namespace FubuMovies
                 routeDefinition.AddHttpMethodConstraint("POST");
                 return routeDefinition;
             }
+            
             else if (call.Method.Name == "Get")
             {
                 var routeDefinition = call.ToRouteDefinition(); 

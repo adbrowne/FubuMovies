@@ -1,7 +1,6 @@
 using System;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using FubuMovies.Api;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure.Maps;
 using FubuMovies.Infrastructure;

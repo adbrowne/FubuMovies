@@ -73,4 +73,6 @@ namespace FubuMovies.Web.Mapping
     }
 
     public class MovieSessionUpdateModel : MovieSessionViewModel { }
+
+    public class MovieSessionNewModel : MovieSessionViewModel { }
 }
