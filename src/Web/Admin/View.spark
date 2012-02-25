@@ -7,12 +7,12 @@
 
 <ignore>
   <script type="text/template" id="movie-item-template">
-      Movie: <%= Name %> <button class="add-session">Add Session</button>
+      Movie: <%= Entity.Name %> <button class="add-session">Add Session</button>
   </script>
 
   <script type="text/template" id="moviesession-item-template">
-      Movie Session: <%= MovieName %> <%= StartTime %>
-  </script>
+      Movie Session: <%= Entity.Movie.Name %> <%= Entity.StartTime %>
+      </script>
 
   <script type="text/template" id="moviesession-new-template">
     

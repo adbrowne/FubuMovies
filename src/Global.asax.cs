@@ -91,8 +91,8 @@ namespace FubuMovies
             Actions
                 .IncludeClassesSuffixedWithController();
 
-            Actions.IncludeType<ApiController<Movie, MovieViewModel, MovieUpdateModel, MovieNewModel>>();
-            Actions.IncludeType<ApiController<MovieSession, MovieSessionViewModel, MovieSessionUpdateModel, MovieSessionNewModel>>();
+            Actions.IncludeType<ApiController<Movie>>();
+            Actions.IncludeType<ApiController<MovieSession>>();
 
             ApplyHandlerConventions(); 
 
@@ -233,7 +233,7 @@ namespace FubuMovies
 
         public bool Matches(ActionCall call, IConfigurationObserver log)
         {
-            return IsSubclassOfRawGeneric(typeof(ApiController<,,,>), call.HandlerType);
+            return IsSubclassOfRawGeneric(typeof(ApiController<>), call.HandlerType);
         }
 
         public IRouteDefinition Build(ActionCall call)
@@ -283,7 +283,7 @@ namespace FubuMovies
                 routeDefinition.Append("api");
                 routeDefinition.Append(pluralName);
 
-                routeDefinition.Input.AddRouteInput(new RouteParameter(new SingleProperty(call.InputType().GetProperty("Id"))), true);
+                routeDefinition.Input.AddRouteInput(new RouteParameter(SingleProperty.Build<UpdateModel<IEntity>>(x =>x.Entity.Id)), true);
                 routeDefinition.AddHttpMethodConstraint("POST");
                 return routeDefinition;
             }

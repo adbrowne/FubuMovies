@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
@@ -33,51 +34,73 @@ namespace FubuMovies.Web.Api
         }
     }
     [Conneg(FormatterOptions.Json | FormatterOptions.Html)]
-    public class ApiController<TEntity, TViewModel, TUpdateModel, TNewViewModel> where TEntity : class, IEntity where TViewModel: IViewModel, new() where TUpdateModel : TViewModel where TNewViewModel : TViewModel, new()
+    public class ApiController<TEntity> where TEntity : class, IEntity
     {
-        private readonly IModelMapper<TEntity, TViewModel> mapper;
         private readonly ISession session;
 
-        public ApiController(IUnitOfWork unitOfWork, IModelMapper<TEntity, TViewModel> mapper)
+        public ApiController(IUnitOfWork unitOfWork)
         {
-            this.mapper = mapper;
             session = unitOfWork.CurrentSession;
         }
 
-        public List<TViewModel> List(ListInputModel<TEntity> input)
+        public List<ViewModel<TEntity>> List(ListInputModel<TEntity> input)
         {
-            var items = session.CreateCriteria<TEntity>().List<TEntity>();
-            return items.Select(x => mapper.GetViewModel(x)).ToList();
+            var items = session.CreateCriteria<TEntity>().SetFetchMode("Movie", FetchMode.Join).List<TEntity>(); 
+            return items.Select(x => new ViewModel<TEntity>{Entity = x}).ToList();
         }
 
-        public TNewViewModel New(NewInputModel<TEntity> input)
+        public NewViewModel<TEntity> New(NewInputModel<TEntity> input)
         {
-            return new TNewViewModel();
+            return new NewViewModel<TEntity>();
         }
 
-        public TViewModel Get(GetByIdInputModel<TViewModel> input)
+        public GetViewModel<TEntity> Get(GetByIdInputModel<TEntity> input)
         {
             var item = session.CreateCriteria<TEntity>().Add(Restrictions.IdEq(input.Id)).UniqueResult<TEntity>();
-            return mapper.GetViewModel(item);
+            return new GetViewModel<TEntity> {Entity = item};
         }
 
-        public TViewModel Update(TUpdateModel input)
+        public ViewModel<TEntity> Update(UpdateModel<TEntity> input)
         {
-            //var item = session.CreateCriteria<TEntity>().Add(Restrictions.IdEq(input.Id)).UniqueResult<TEntity>();
 
-            var entity = mapper.GetEntity(input);
+            var entity = input.Entity;
             session.Update(entity);
-            return mapper.GetViewModel(entity);
+            return new ViewModel<TEntity>{Entity = entity};
         }
 
 
-        public TViewModel Add(TViewModel input)
+        public ViewModel<TEntity> Add(AddModel<TEntity> input)
         {
-            var entity = mapper.GetEntity(input);
+            var entity = input.Entity;
             session.Save(entity);
 
-            return mapper.GetViewModel(entity);
+            return new ViewModel<TEntity> {Entity = entity};
         }
+    }
+
+    public class UpdateModel<T> where T: IEntity
+    {
+        public T Entity { get; set; }
+
+        
+    }
+
+    public class AddModel<T>
+    {
+        public T Entity { get; set; }
+
+        
+    }
+
+    public class ViewModel<T>
+    {
+        public T Entity { get; set; }
+    }
+
+
+    public class GetViewModel<T>
+    {
+        public T Entity { get; set; }
     }
 
     public class NewViewModel<T>
