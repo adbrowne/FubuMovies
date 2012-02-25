@@ -5,7 +5,6 @@ using FubuMovies.Core;
 using FubuMovies.Infrastructure.Maps;
 using FubuMovies.Infrastructure;
 using FubuMovies.Web.Api;
-using FubuMovies.Web.Mapping;
 using FubuValidation.StructureMap;
 using NHibernate;
 using NHibernate.ByteCode.Castle;
@@ -16,7 +15,6 @@ using StructureMap;
 using StructureMap.Configuration.DSL;
 using StructureMap.Pipeline;
 using Environment = NHibernate.Cfg.Environment;
-using MovieViewModel = FubuMovies.Web.Mapping.MovieViewModel;
 
 
 namespace FubuMovies.Infrastructure
@@ -65,12 +63,6 @@ namespace FubuMovies.Infrastructure
 
             For<IAuthenticationService>().Use<AuthenticationService>();
             this.FubuValidation();
-
-            For<IModelMapper<Movie, MovieViewModel>>().Use<MovieModelMapper>();
-            For<IModelMapper<MovieSession, MovieSessionViewModel>>().Use<MovieSessionModelMapper>();
-
-
-            //ForRequestedType<IDatabaseBuilder>().TheDefaultIsConcreteType<DatabaseBuilder>();
         }
     }
 

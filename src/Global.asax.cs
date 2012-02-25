@@ -15,7 +15,6 @@ using FubuMovies.Login;
 using FubuMovies.Timetable;
 using FubuMovies.Web;
 using FubuMovies.Web.Api;
-using FubuMovies.Web.Mapping;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Diagnostics;
@@ -35,7 +34,6 @@ using FubuMVC.Validation;
 using FubuValidation;
 using HtmlTags;
 using StructureMap;
-using MovieViewModel = FubuMovies.Web.Mapping.MovieViewModel;
 
 namespace FubuMovies
 {

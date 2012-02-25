@@ -1,3 +1,2 @@
 ﻿<use namespace="System.Linq"/>
 <use namespace="FubuMovies.Web.Api"/>
-<use namespace="FubuMovies.Web.Mapping"/>
