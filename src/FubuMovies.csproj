@@ -134,8 +134,21 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Web\Api\AddInputModel.cs" />
+    <Compile Include="Web\Api\AddModel.cs" />
     <Compile Include="Web\Api\ApiController.cs" />
     <Compile Include="Infrastructure\IViewModel.cs" />
+    <Compile Include="Web\Api\EntityList.cs" />
+    <Compile Include="Web\Api\GetByIdInputModel.cs" />
+    <Compile Include="Web\Api\GetViewModel.cs" />
+    <Compile Include="Web\Api\IViewModel.cs" />
+    <Compile Include="Web\Api\ListInputModel.cs" />
+    <Compile Include="Web\Api\ListViewModel.cs" />
+    <Compile Include="Web\Api\NewInputModel.cs" />
+    <Compile Include="Web\Api\NewViewModel.cs" />
+    <Compile Include="Web\Api\UpdateModel.cs" />
+    <Compile Include="Web\Api\ViewHelpers.cs" />
+    <Compile Include="Web\Api\ViewModel.cs" />
     <Compile Include="Web\HandlersMarker.cs" />
     <Compile Include="Infrastructure\AuthenticationService.cs" />
     <Compile Include="Web\Login\GetHandler.cs" />

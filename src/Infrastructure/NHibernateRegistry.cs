@@ -3,8 +3,6 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure.Maps;
-using FubuMovies.Infrastructure;
-using FubuMovies.Web.Api;
 using FubuValidation.StructureMap;
 using NHibernate;
 using NHibernate.ByteCode.Castle;
