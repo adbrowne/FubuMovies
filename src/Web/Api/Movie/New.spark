@@ -4,7 +4,7 @@
 </content:title>
 <h1>Movies</h1>
 <var movie="Model.Entity"/>
-<Form model="FubuMovies.Web.Api.AddModel[[FubuMovies.Core.Movie]]">
+<Form model="AddModel[[Movie]]">
   <div class="row">
     <LabelFor property="Entity.Name" />
     <InputFor property="Entity.Name" />
