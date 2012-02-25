@@ -1,17 +1,17 @@
-﻿<viewdata model="FubuMovies.Web.Mapping.MovieNewModel" />
+﻿<viewdata model="FubuMovies.Web.Api.NewViewModel[[FubuMovies.Core.Movie]]" />
 <content:title>
    Movies
 </content:title>
 <h1>Movies</h1>
-
-<Form model="MovieViewModel">
+<var movie="Model.Entity"/>
+<Form model="FubuMovies.Web.Api.AddModel[[FubuMovies.Core.Movie]]">
   <div class="row">
-    <LabelFor property="Name" />
-    <InputFor property="Name" />
+    <LabelFor property="Entity.Name" />
+    <InputFor property="Entity.Name" />
   </div>
   <div class="row">
-    <LabelFor property="Description" />
-    <InputFor property="Description" />
+    <LabelFor property="Entity.Description" />
+    <InputFor property="Entity.Description" />
   </div>
   <div class="row row-submit">
     <button type="submit">

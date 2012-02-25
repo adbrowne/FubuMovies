@@ -26,6 +26,7 @@ using FubuMVC.Core.Registration.Routes;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
 using FubuMVC.Core.UI;
+using FubuMVC.Core.UI.Configuration;
 using FubuMVC.Core.UI.Extensibility;
 using FubuMVC.Core.Urls;
 using FubuMVC.Spark;
@@ -109,8 +110,8 @@ namespace FubuMovies
 
             ApplyHandlerConventions(typeof(HandlersMarker));
 
-            Models
-                .BindModelsWith<EntityModelBinder>();
+            //Models
+            //    .BindModelsWith<EntityModelBinder>();
 
             Actions.IncludeTypes(t => t.Name.EndsWith("Handler")).IgnoreMethodsDeclaredBy<AuthorizationHandler>();
 
@@ -126,8 +127,8 @@ namespace FubuMovies
                 .TryToAttachWithDefaultConventions()
                 .TryToAttachViewsInPackages()
                 .RegisterActionLessViews(t => t.ViewModelType == typeof(Notification));
-
             
+            HtmlConvention<DefaultHtmlConventions>();
             HtmlConvention<MyPasswordConvention>();
             HtmlConvention<MyLoginFormConvention>();
 
@@ -150,8 +151,9 @@ namespace FubuMovies
                 //s.FillType<IExceptionHandler, AsyncExceptionHandler>();
                 s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>(); 
                 s.AddService<IAuthorizationFailureHandler, AuthorizationHandler>();
+                s.AddService<IElementNamingConvention, DotNotationElementNamingConvention>();
             });
-
+            
             this.Extensions()
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
         }
@@ -283,7 +285,7 @@ namespace FubuMovies
                 routeDefinition.Append("api");
                 routeDefinition.Append(pluralName);
 
-                routeDefinition.Input.AddRouteInput(new RouteParameter(SingleProperty.Build<UpdateModel<IEntity>>(x =>x.Entity.Id)), true);
+                routeDefinition.Input.AddRouteInput(new RouteParameter(new SingleProperty(call.InputType().GetProperty("Id"))), true);
                 routeDefinition.AddHttpMethodConstraint("POST");
                 return routeDefinition;
             }

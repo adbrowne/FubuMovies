@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FubuMovies.Core;
@@ -16,37 +17,40 @@ namespace FubuMovies.Web.Api
     }
     public static class ViewHelpers
     {
-        public static GetByIdInputModel<TViewModel> GetInputModel<TViewModel>(this IFubuPage page, TViewModel model) where TViewModel : IViewModel
+        public static GetByIdInputModel<TEntity> GetInputModel<TEntity>(this IFubuPage page, TEntity entity) where TEntity : IEntity
         {
-            var getByIdInputModel = new GetByIdInputModel<TViewModel>
+            var getByIdInputModel = new GetByIdInputModel<TEntity>
                                         {
-                                            Id = model.Id
+                                            Id = entity.Id
                                         };
             return getByIdInputModel;
         }
 
-        public static TUpdateModel GetUpdateModel<TViewModel, TUpdateModel>(this IFubuPage page, TViewModel model) where TViewModel : IViewModel where TUpdateModel : IViewModel, new()
+        public static UpdateModel<TEntity> GetUpdateModel<TEntity>(this IFubuPage page, TEntity entity) where TEntity: IEntity, new()
         {
-           return new TUpdateModel
+           return new UpdateModel<TEntity>
                       {
-                          Id = model.Id
+                          Entity = new TEntity
+                                       {
+                                           Id = entity.Id
+                                       }
                       };
         }
     }
     [Conneg(FormatterOptions.Json | FormatterOptions.Html)]
-    public class ApiController<TEntity> where TEntity : class, IEntity
+    public class ApiController<TEntity> where TEntity : class, IEntity  
     {
         private readonly ISession session;
 
-        public ApiController(IUnitOfWork unitOfWork)
+        public ApiController(IUnitOfWork unitOfWork) 
         {
             session = unitOfWork.CurrentSession;
         }
 
-        public List<ViewModel<TEntity>> List(ListInputModel<TEntity> input)
+        public EntityList<TEntity> List(ListInputModel<TEntity> input) 
         {
-            var items = session.CreateCriteria<TEntity>().SetFetchMode("Movie", FetchMode.Join).List<TEntity>(); 
-            return items.Select(x => new ViewModel<TEntity>{Entity = x}).ToList();
+            var items = session.CreateCriteria<TEntity>().SetFetchMode("Movie", FetchMode.Join).List<TEntity>();
+            return new EntityList<TEntity>(items);
         }
 
         public NewViewModel<TEntity> New(NewInputModel<TEntity> input)
@@ -62,12 +66,10 @@ namespace FubuMovies.Web.Api
 
         public ViewModel<TEntity> Update(UpdateModel<TEntity> input)
         {
-
             var entity = input.Entity;
             session.Update(entity);
             return new ViewModel<TEntity>{Entity = entity};
         }
-
 
         public ViewModel<TEntity> Add(AddModel<TEntity> input)
         {
@@ -78,23 +80,56 @@ namespace FubuMovies.Web.Api
         }
     }
 
+    // Cludgy workaround because FubuMVC.Spark.Registration.GenericParser doesn't seem to support nested generics
+    public class EntityList<T> : IEnumerable<ViewModel<T>> where T : IEntity
+    {
+        private readonly List<ViewModel<T>> internalList;
+
+        public EntityList(IEnumerable<T> items)
+        {
+            internalList = new List<ViewModel<T>>();
+            internalList.AddRange(items.Select(x => new ViewModel<T>{Entity = x}));
+        }
+
+        public EntityList() : this (new List<T>())
+        {
+            
+        }
+
+        public IEnumerator<ViewModel<T>> GetEnumerator()
+        {
+            return internalList.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
     public class UpdateModel<T> where T: IEntity
     {
         public T Entity { get; set; }
-
-        
+        public int Id { 
+            get { return Entity.Id; }
+            set { Entity.Id = value; }
+        }
     }
 
     public class AddModel<T>
     {
         public T Entity { get; set; }
-
-        
     }
 
-    public class ViewModel<T>
+    public class ViewModel<T> : IViewModel where T : IEntity
     {
         public T Entity { get; set; }
+
+        public int Id
+        {
+            get { return Entity.Id; }
+            set { Entity.Id = value; }
+        }
     }
 
 
@@ -105,6 +140,7 @@ namespace FubuMovies.Web.Api
 
     public class NewViewModel<T>
     {
+        public T Entity { get; set; }
     }
 
     public class NewInputModel<T>

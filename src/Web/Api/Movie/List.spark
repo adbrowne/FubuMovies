@@ -1,12 +1,14 @@
-﻿<viewdata model="System.Collections.Generic.List[[FubuMovies.Web.Mapping.MovieViewModel]]" />
+﻿<viewdata model="FubuMovies.Web.Api.EntityList[[FubuMovies.Core.Movie]]" />
+
 <content:title>
    Movies
 </content:title>
 <h1>Movies</h1>
 
 <ul>
-  <for each="var movie in Model">
+  <for each="var viewModel in Model">
     <li>
+      <var movie="viewModel.Entity"/>
       !{this.LinkTo(this.GetInputModel(movie)).Text(movie.Name)}
     </li>
   </for>

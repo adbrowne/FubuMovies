@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FubuMovies.Core
+namespace FubuMovies.Core 
 {
     [Plural("Movies")]
     public class Movie : IEntity
