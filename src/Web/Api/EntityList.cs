@@ -6,7 +6,7 @@ using FubuMovies.Core;
 namespace FubuMovies.Web.Api
 {
     // Cludgy workaround because FubuMVC.Spark.Registration.GenericParser doesn't seem to support nested generics
-    public class EntityList<T> : IEnumerable<ViewModel<T>> where T : IEntity, new()
+    public class EntityList<T> : IEnumerable<ViewModel<T>> where T : IEntity
     {
         private readonly List<ViewModel<T>> internalList;
 

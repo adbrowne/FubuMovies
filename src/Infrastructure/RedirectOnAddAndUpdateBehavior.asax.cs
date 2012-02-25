@@ -33,7 +33,6 @@ namespace FubuMovies.Infrastructure
             if(acceptsHtml)
             {
                 var outputModel = request.Get<ViewModel<T>>();
-                //var outputModel = (IViewModel<IEntity>) request.Get(typeof (IViewModel<IEntity>));
                 var inputModel = typeof(GetByIdInputModel<>).CloseAndBuildAs<GetByIdInputModel<T>>(new []{typeof(T)});
                 inputModel.Id = outputModel.Id;
                 var url = registry.UrlFor(inputModel);

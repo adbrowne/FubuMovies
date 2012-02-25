@@ -8,7 +8,7 @@ using NHibernate.Criterion;
 namespace FubuMovies.Web.Api
 {
     [Conneg(FormatterOptions.Json | FormatterOptions.Html)]
-    public class ApiController<TEntity> where TEntity : class, IEntity, new()
+    public class ApiController<TEntity> where TEntity : class, IEntity
     {
         private readonly ISession session;
 
