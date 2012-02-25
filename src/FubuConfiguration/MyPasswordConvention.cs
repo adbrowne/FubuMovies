@@ -1,4 +1,5 @@
 ﻿using FubuMVC.Core.UI;
+using FubuMVC.Core.UI.Configuration;
 using HtmlTags;
 
 namespace FubuMovies.FubuConfiguration
@@ -8,10 +9,15 @@ namespace FubuMovies.FubuConfiguration
         public MyPasswordConvention()
         {
             Editors
-                .If(x => x.Accessor.Name == "Password")
+                .If(x => IsPassword(x))
                 .BuildBy(
                     builder => NewPasswordElement()
                 );
+        }
+
+        private bool IsPassword(AccessorDef x)
+        {
+            return x.Accessor.Name == "Password";
         }
 
         private static HtmlTag NewPasswordElement()

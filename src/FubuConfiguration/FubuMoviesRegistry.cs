@@ -57,22 +57,21 @@ namespace FubuMovies.FubuConfiguration
             Policies.WrapBehaviorChainsWith<LoginBehaviour>().Ordering(a => a.MustBeBeforeAuthorization());
 
             Configure(graph =>
-                      RegExtensions.ApplyRedirectOnAddAndUpdate(graph)
+                      graph.ApplyRedirectOnAddAndUpdate()
                 );
 
-            //Policies.ConditionallyWrapBehaviorChainsWith<RedirectOnAddAndUpdateBehavior>(
-            //    x => x.OutputType().Closes(typeof(ViewModel<>)));
             this.UseSpark();
 
             Views
                 .TryToAttachWithDefaultConventions()
                 .TryToAttachViewsInPackages()
                 .RegisterActionLessViews(t => t.ViewModelType == typeof(Notification));
-
-            HtmlConvention<DefaultHtmlConventions>();
+            
             HtmlConvention<MyPasswordConvention>();
             HtmlConvention<MyLoginFormConvention>();
-
+            HtmlConvention<EntityReferenceConvention>();
+            HtmlConvention<DefaultHtmlConventions>();
+            
             this.Validation(validation =>
                                 {
                                     validation.Actions.Include(
@@ -89,7 +88,6 @@ namespace FubuMovies.FubuConfiguration
 
             Services(s =>
                          {
-                             //s.FillType<IExceptionHandler, AsyncExceptionHandler>();
                              s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>();
                              s.AddService<IAuthorizationFailureHandler, AuthorizationHandler>();
                              s.AddService<IElementNamingConvention, DotNotationElementNamingConvention>();

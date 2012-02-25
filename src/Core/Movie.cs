@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FubuMovies.Core 
+﻿namespace FubuMovies.Core 
 {
     [Plural("Movies")]
     public class Movie : IEntity
@@ -8,22 +6,9 @@ namespace FubuMovies.Core
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
-
- 
-    }
-
-    public interface IEntity
-    {
-        int Id { get; set; }
-    }
-
-    public class PluralAttribute : Attribute
-    {
-        public string Plural { get; set; }
-
-        public PluralAttribute(string plural)
+        public override string ToString()
         {
-            Plural = plural;
+            return Name;
         }
     }
 }

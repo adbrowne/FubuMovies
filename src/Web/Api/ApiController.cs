@@ -25,7 +25,10 @@ namespace FubuMovies.Web.Api
 
         public NewViewModel<TEntity> New(NewInputModel<TEntity> input)
         {
-            return new NewViewModel<TEntity>();
+            return new NewViewModel<TEntity>
+                       {
+                           Session = session
+                       };
         }
 
         public GetViewModel<TEntity> Get(GetByIdInputModel<TEntity> input)

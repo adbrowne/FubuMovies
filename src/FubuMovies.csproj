@@ -134,6 +134,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\IEntity.cs" />
+    <Compile Include="Core\PluralAttribute.cs" />
+    <Compile Include="FubuConfiguration\EntityReferenceConvention.cs" />
     <Compile Include="FubuConfiguration\TransactionBehavior.cs" />
     <Compile Include="FubuConfiguration\EntityModelBinder.cs" />
     <Compile Include="FubuConfiguration\FubuMoviesRegistry.cs" />
