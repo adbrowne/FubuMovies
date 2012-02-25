@@ -1,0 +1,25 @@
+﻿<viewdata model="FubuMovies.Web.Api.GetViewModel[[FubuMovies.Core.MovieSession]]" />
+<content:title>
+   Movies
+</content:title>
+<h1>Movies</h1>
+<var movieSession="Model.Entity"/>
+!{this.FormFor(this.GetUpdateModel(movieSession))}
+  <div class="row">
+    <LabelFor property="Entity.Movie.Name" />
+    <DisplayFor property="Entity.Movie.Name" />
+  </div>
+  <div class="row">
+    <LabelFor property="Entity.Movie.Description" />
+    <DisplayFor property="Entity.Movie.Description" />
+  </div>
+  <div class="row">
+    <LabelFor property="Entity.StartTime" />
+    <InputFor property="Entity.StartTime" />
+  </div>
+  <div class="row row-submit">
+    <button type="submit">
+      <span>Save Movie Session</span>
+    </button>
+  </div>
+</Form>

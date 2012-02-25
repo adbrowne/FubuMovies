@@ -1,0 +1,15 @@
+﻿<viewdata model="FubuMovies.Web.Api.EntityList[[FubuMovies.Core.MovieSession]]" />
+
+<content:title>
+  Movie Sessions
+</content:title>
+<h1>Movie Sessions</h1>
+
+<ul>
+  <for each="var viewModel in Model">
+    <li>
+      <var movieSession="viewModel.Entity"/>
+      !{this.LinkTo(this.GetInputModel(movieSession)).Text(movieSession.Movie.Name + " " + movieSession.StartTime)}
+    </li>
+  </for>
+</ul>

@@ -1,0 +1,21 @@
+﻿<viewdata model="FubuMovies.Web.Api.NewViewModel[[FubuMovies.Core.MovieSession]]" />
+<content:title>
+   Movie Session
+</content:title>
+<h1>Movie Session</h1>
+<var movieSession="Model.Entity"/>
+<Form model="AddModel[[MovieSession]]">
+  <div class="row">
+    <LabelFor property="Entity.Movie" />
+    <InputFor property="Entity.Movie" />
+  </div>
+  <div class="row">
+    <LabelFor property="Entity.StartTime" />
+    <InputFor property="Entity.StartTime" />
+  </div>
+  <div class="row row-submit">
+    <button type="submit">
+      <span>Add Movie Session</span>
+    </button>
+  </div>
+</Form>
