@@ -134,6 +134,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FubuConfiguration\TransactionBehavior.cs" />
+    <Compile Include="FubuConfiguration\EntityModelBinder.cs" />
+    <Compile Include="FubuConfiguration\FubuMoviesRegistry.cs" />
+    <Compile Include="FubuConfiguration\ValidationHandlerModelDescriptor.cs" />
+    <Compile Include="FubuConfiguration\MyLoginFormConvention.cs" />
+    <Compile Include="FubuConfiguration\MyPasswordConvention.cs" />
+    <Compile Include="FubuConfiguration\MyUrlPolicy.cs" />
+    <Compile Include="FubuConfiguration\RedirectOutputNode.cs" />
+    <Compile Include="FubuConfiguration\RegExtensions.cs" />
     <Compile Include="Infrastructure\RedirectOnAddAndUpdateBehavior.asax.cs" />
     <Compile Include="LoginBehaviour.asax.cs" />
     <Compile Include="Web\Api\AddInputModel.cs" />
