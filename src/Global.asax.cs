@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.Principal;
-using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 using FubuCore;
@@ -21,6 +19,7 @@ using FubuMVC.Core.Diagnostics;
 using FubuMVC.Core.Registration;
 using FubuMVC.Core.Registration.Conventions;
 using FubuMVC.Core.Registration.Nodes;
+using FubuMVC.Core.Registration.ObjectGraph;
 using FubuMVC.Core.Registration.Routes;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
@@ -93,7 +92,7 @@ namespace FubuMovies
             Actions.IncludeType<ApiController<Movie>>();
             Actions.IncludeType<ApiController<MovieSession>>();
 
-            ApplyHandlerConventions(); 
+            ApplyHandlerConventions();
 
             Routes
                 .HomeIs<TimetableRequest>()
@@ -119,13 +118,19 @@ namespace FubuMovies
 
             Policies.WrapBehaviorChainsWith<LoginBehaviour>().Ordering(a => a.MustBeBeforeAuthorization());
 
+            Configure(graph =>
+                RegExtensions.ApplyRedirectOnAddAndUpdate(graph)
+);
+
+            //Policies.ConditionallyWrapBehaviorChainsWith<RedirectOnAddAndUpdateBehavior>(
+            //    x => x.OutputType().Closes(typeof(ViewModel<>)));
             this.UseSpark();
 
             Views
                 .TryToAttachWithDefaultConventions()
                 .TryToAttachViewsInPackages()
                 .RegisterActionLessViews(t => t.ViewModelType == typeof(Notification));
-            
+
             HtmlConvention<DefaultHtmlConventions>();
             HtmlConvention<MyPasswordConvention>();
             HtmlConvention<MyLoginFormConvention>();
@@ -135,25 +140,64 @@ namespace FubuMovies
                                     validation.Actions.Include(
                                         call =>
                                         call.HasInput &&
-                                        call.InputType().GetInterfaces().Contains(typeof (IValidationModel)));
+                                        call.InputType().GetInterfaces().Contains(typeof(IValidationModel)));
 
                                     validation
                                         .Failures
                                         .If(call => call.InputType() != null &&
-                                                    call.InputType().GetInterfaces().Contains(typeof (IValidationModel)))
+                                                    call.InputType().GetInterfaces().Contains(typeof(IValidationModel)))
                                         .TransferBy<HandlerModelDescriptor>();
                                 });
 
             Services(s =>
             {
                 //s.FillType<IExceptionHandler, AsyncExceptionHandler>();
-                s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>(); 
+                s.ReplaceService<IUrlTemplatePattern, JQueryUrlTemplate>();
                 s.AddService<IAuthorizationFailureHandler, AuthorizationHandler>();
                 s.AddService<IElementNamingConvention, DotNotationElementNamingConvention>();
             });
-            
+
             this.Extensions()
                 .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
+        }
+    }
+
+    public static class RegExtensions
+    {
+        public static void ApplyRedirectOnAddAndUpdate(this BehaviorGraph graph)
+        {
+            foreach (var chain in graph.Behaviors)
+            {
+                var actionOutputType = chain.ActionOutputType();
+
+                if (actionOutputType.Closes(typeof(ViewModel<>)))
+                {
+                    var outputNode = new RedirectOutputNode(actionOutputType);
+                    var action = chain.Last(x => x is ActionCall);
+                    action.AddAfter(outputNode);
+                }    
+            }
+        }
+    }
+
+    public class RedirectOutputNode : BehaviorNode
+    {
+        private readonly Type inputType;
+
+        public RedirectOutputNode(Type inputType)
+        {
+            this.inputType = inputType;
+        }
+
+        protected override ObjectDef buildObjectDef()
+        {
+            var objectDef = new ObjectDef(typeof(RedirectOnAddAndUpdateBehavior<>).MakeGenericType(inputType.GetGenericArguments().First()));
+            return objectDef;
+        }
+
+        public override BehaviorCategory Category
+        {
+            get { return BehaviorCategory.Conditional; }
         }
     }
 
@@ -178,13 +222,13 @@ namespace FubuMovies
 
         private static HtmlTag NewPasswordElement()
         {
-            return new HtmlTag("input").Attr("type","password");
+            return new HtmlTag("input").Attr("type", "password");
         }
     }
 
     public class EntityModelBinder : IModelBinder
     {
-        public bool Matches(Type type)  
+        public bool Matches(Type type)
         {
             return type.CanBeCastTo<IEntity>();
         }
@@ -224,7 +268,7 @@ namespace FubuMovies
                 toCheck = toCheck.BaseType;
             }
             return false;
-        } 
+        }
 
         static Type GetGenericParameter(Type generic)
         {
@@ -257,7 +301,7 @@ namespace FubuMovies
                 routeDefinition.AddHttpMethodConstraint("GET");
                 return routeDefinition;
             }
-            else if(call.Method.Name == "Add")
+            else if (call.Method.Name == "Add")
             {
                 var routeDefinition = call.ToRouteDefinition();
                 routeDefinition.Append("api");
@@ -265,13 +309,13 @@ namespace FubuMovies
                 routeDefinition.AddHttpMethodConstraint("POST");
                 return routeDefinition;
             }
-            
+
             else if (call.Method.Name == "Get")
             {
-                var routeDefinition = call.ToRouteDefinition(); 
+                var routeDefinition = call.ToRouteDefinition();
                 routeDefinition.Append("api");
                 routeDefinition.Append(pluralName);
-                
+
                 routeDefinition.Input.AddRouteInput(new RouteParameter(new SingleProperty(call.InputType().GetProperty("Id"))), true);
                 routeDefinition.AddHttpMethodConstraint("GET");
                 return routeDefinition;
@@ -293,35 +337,11 @@ namespace FubuMovies
 
         private static string GetPluralName(Type entityType)
         {
-            foreach(var attrib in entityType.GetCustomAttributes(false).OfType<PluralAttribute>())
+            foreach (var attrib in entityType.GetCustomAttributes(false).OfType<PluralAttribute>())
             {
                 return attrib.Plural;
             }
             return entityType.Name;
-        }
-    }
-
-    public class LoginBehaviour : IActionBehavior
-    {
-        private readonly IActionBehavior innerBehaviour;
-
-        public LoginBehaviour(IActionBehavior innerBehaviour)
-        {
-            this.innerBehaviour = innerBehaviour;
-        }
-
-        public void Invoke()
-        {
-            if ((string)HttpContext.Current.Session["user"] == "admin")
-            {
-                HttpContext.Current.User = new GenericPrincipal(new GenericIdentity("somebody"), new[] { "manager" });
-            }
-            innerBehaviour.Invoke();
-        }
-
-        public void InvokePartial()
-        {
-            innerBehaviour.InvokePartial();
         }
     }
 
@@ -383,7 +403,7 @@ namespace FubuMovies
             catch
             {
                 _unitOfWork.Rollback();
-                throw; 
+                throw;
             }
 
         }
