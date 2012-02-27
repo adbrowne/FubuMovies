@@ -23,7 +23,7 @@ namespace FubuMovies.Web.Login
 
             if (authenticated)
             {
-                return FubuContinuation.RedirectTo(new EditorInputModel());
+                return FubuContinuation.RedirectTo(new AdminInputModel());
             }
             else
             {
