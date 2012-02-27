@@ -1,11 +1,11 @@
 using FubuMVC.Core.Security;
 
-namespace FubuMovies.Web.Admin
+namespace FubuMovies.Web.Admin.Editor
 {
     [AllowRole("manager")]
-    public class EditorController
+    public class GetHandler
     {
-        public EditTimetableViewModel get(EditorInputModel inputModel)
+        public EditTimetableViewModel Execute(EditorInputModel inputModel)
         {
             return new EditTimetableViewModel(); 
         }

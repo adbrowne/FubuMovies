@@ -148,6 +148,7 @@
     <Compile Include="FubuConfiguration\RegExtensions.cs" />
     <Compile Include="Infrastructure\RedirectOnAddAndUpdateBehavior.asax.cs" />
     <Compile Include="LoginBehaviour.asax.cs" />
+    <Compile Include="Web\Admin\GetHandler.cs" />
     <Compile Include="Web\Api\AddInputModel.cs" />
     <Compile Include="Web\Api\AddModel.cs" />
     <Compile Include="Web\Api\ApiController.cs" />
@@ -172,7 +173,7 @@
     <Compile Include="Web\Login\LoginSubmitInputModel.cs" />
     <Compile Include="Web\Login\LoginViewModel.cs" />
     <Compile Include="Infrastructure\RoleProvider.cs" />
-    <Compile Include="Web\Admin\EditorController.cs" />
+    <Compile Include="Web\Admin\Editor\GetHandler.cs" />
     <Compile Include="Infrastructure\AuthorizationHandler.asax.cs" />
     <Compile Include="Core\Movie.cs" />
     <Compile Include="Data\MovieRepository.cs" />
@@ -213,7 +214,7 @@
     <Content Include="Shared\Notification.spark" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web\Admin\View.spark" />
+    <Content Include="Web\Admin\Editor\View.spark" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web\Api\Movie\List.spark" />
@@ -240,6 +241,9 @@
     <Content Include="Web\Api\MovieSession\New.spark">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web\Admin\View.spark" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

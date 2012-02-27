@@ -1,5 +1,6 @@
 using FubuMovies.Infrastructure;
 using FubuMovies.Web.Admin;
+using FubuMovies.Web.Admin.Editor;
 using FubuMVC.Core.Continuations;
 
 namespace FubuMovies.Web.Login

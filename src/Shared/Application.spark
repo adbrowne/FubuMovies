@@ -44,7 +44,7 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="">
-				!{this.LinkTo<FubuMovies.Web.Admin.EditorInputModel>().Text("Admin")}
+				!{this.LinkTo<FubuMovies.Web.Admin.AdminInputModel>().Text("Admin")}
               </li>
 			  <li class="">
 				!{this.LinkTo<FubuMovies.Web.Login.LoginInputModel>().Text("Login")}

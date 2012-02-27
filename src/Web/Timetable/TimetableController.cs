@@ -1,20 +1,19 @@
-using System;
 using System.Collections.Generic;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 
-namespace FubuMovies.Timetable
+namespace FubuMovies.Web.Timetable
 {
-    public class TimetableController
+    public class GetHandler
     {
         private readonly IUnitOfWork unifOfWork;
 
-        public TimetableController(IUnitOfWork unifOfWork)
+        public GetHandler(IUnitOfWork unifOfWork)
         {
             this.unifOfWork = unifOfWork;
         }
 
-        public TimetableViewModel View(TimetableRequest request)
+        public TimetableViewModel Execute(TimetableRequest request)
         {
             var sessions = unifOfWork.CurrentSession.CreateCriteria<MovieSession>().List<MovieSession>();
             return new TimetableViewModel

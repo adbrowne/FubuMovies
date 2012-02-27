@@ -1,8 +1,8 @@
 ﻿using FubuMovies.Core;
 using FubuMovies.Infrastructure;
-using FubuMovies.Timetable;
 using FubuMovies.Web;
 using FubuMovies.Web.Api;
+using FubuMovies.Web.Timetable;
 using FubuMVC.Core;
 using FubuMVC.Core.Registration.ObjectGraph;
 using FubuMVC.Core.Security;
@@ -89,7 +89,7 @@ namespace FubuMovies.FubuConfiguration
                          });
 
             this.Extensions()
-                .For<Timetable.TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
+                .For<TimetableViewModel>("extension-placeholder", x => "<p>Rendered from content extension.</p>");
         }
     }
 }

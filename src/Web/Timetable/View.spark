@@ -1,4 +1,4 @@
-﻿<viewdata model="FubuMovies.Timetable.TimetableViewModel" />
+﻿<viewdata model="FubuMovies.Web.Timetable.TimetableViewModel" />
 <content:title>
   Movie Timetable
 </content:title>
