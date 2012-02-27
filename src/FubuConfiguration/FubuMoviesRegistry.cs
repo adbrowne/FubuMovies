@@ -2,6 +2,7 @@
 using FubuMovies.Infrastructure;
 using FubuMovies.Web;
 using FubuMovies.Web.Api;
+using FubuMovies.Web.Login;
 using FubuMovies.Web.Timetable;
 using FubuMVC.Core;
 using FubuMVC.Core.Registration.ObjectGraph;
@@ -49,6 +50,8 @@ namespace FubuMovies.FubuConfiguration
 
             Policies.WrapBehaviorChainsWith<LoginBehaviour>().Ordering(a => a.MustBeBeforeAuthorization());
 
+            Policies.ConditionallyWrapBehaviorChainsWith<LoginResultBehavior>(x => x.OutputType() is typeof(LoginResultModel))
+            ;
             Configure(graph =>
                       graph.ApplyRedirectOnAddAndUpdate()
                 );

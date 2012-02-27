@@ -1,7 +1,4 @@
 using FubuMovies.Infrastructure;
-using FubuMovies.Web.Admin;
-using FubuMovies.Web.Admin.Editor;
-using FubuMVC.Core.Continuations;
 
 namespace FubuMovies.Web.Login
 {
@@ -14,23 +11,19 @@ namespace FubuMovies.Web.Login
             this.authenticationService = authenticationService;
         }
 
-        public FubuContinuation Execute(LoginSubmitInputModel input)
+        public LoginResultModel Execute(LoginSubmitInputModel input)
         {
             var authenticated = authenticationService.Authenticate(
                 input.Username, 
                 input.Password
             );
 
-            if (authenticated)
-            {
-                return FubuContinuation.RedirectTo(new AdminInputModel());
-            }
-            else
-            {
-                return FubuContinuation.TransferTo(new LoginInputModel());
-            }
+            return new LoginResultModel { Success = authenticated };
         }
+    }
 
-        
+    public class LoginResultModel
+    {
+        public bool Success { get; set; }
     }
 }
