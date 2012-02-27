@@ -12,18 +12,21 @@ namespace FubuMovies.FubuConfiguration
         private readonly IUrlRegistry registry;
         private readonly IOutputWriter writer;
         private readonly IActionBehavior innerBehavior;
+        private readonly IPartialFactory factory;
 
         public LoginResultBehavior(
             IFubuRequest request, 
             IUrlRegistry registry,
             IOutputWriter writer,
-            IActionBehavior innerBehavior
+            IActionBehavior innerBehavior,
+            IPartialFactory factory
         )
         {
             this.request = request;
             this.registry = registry;
             this.writer = writer;
             this.innerBehavior = innerBehavior;
+            this.factory = factory;
         }
 
         public void Invoke()
@@ -31,21 +34,24 @@ namespace FubuMovies.FubuConfiguration
             innerBehavior.Invoke();
            
             var loginResult = request.Get<LoginResultModel>();
-            string url;
             if(loginResult.Success)
             {
-                url = registry.UrlFor<AdminInputModel>();
+                string url = registry.UrlFor<AdminInputModel>();
+                writer.RedirectToUrl(url);
             }
             else
             {
-                url = registry.UrlFor<LoginInputModel>();
+                var inputModel = new LoginInputModel();
+                request.SetObject(inputModel);
+
+                IActionBehavior partial = factory.BuildPartial(inputModel.GetType());
+                partial.InvokePartial();
             }
-            writer.RedirectToUrl(url);
         }
 
         public void InvokePartial()
         {
-            innerBehavior.InvokePartial();           
+            //innerBehavior.InvokePartial();           
         }
     }
 }

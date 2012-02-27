@@ -1,4 +1,6 @@
-﻿using FubuMovies.Core;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Web;
 using FubuMovies.Web.Api;
@@ -40,8 +42,6 @@ namespace FubuMovies.FubuConfiguration
                 .IgnoreMethodSuffix("Query")
                 .UrlPolicy(new MyUrlPolicy());
 
-            //Actions.IncludeTypes(t => t.Name.EndsWith("Handler")).IgnoreMethodsDeclaredBy<AuthorizationHandler>();
-
             ApplyHandlerConventions<HandlersMarker>();
 
             Policies.Add<AntiForgeryPolicy>();
@@ -50,8 +50,15 @@ namespace FubuMovies.FubuConfiguration
 
             Policies.WrapBehaviorChainsWith<SetupRoleBehavior>().Ordering(a => a.MustBeBeforeAuthorization());
 
-            Policies.ConditionallyWrapBehaviorChainsWith<LoginResultBehavior>(x => x.OutputType() == typeof(LoginResultModel))
-            ;
+            Configure(graph =>
+                      graph
+                        .Actions()
+                        .Where(c => c.OutputType() == typeof (LoginResultModel))
+                        .Each(call => 
+                          call.WrapWith<LoginResultBehavior>()
+                         )
+                      );
+
             Configure(graph =>
                       graph.ApplyRedirectOnAddAndUpdate()
                 );
@@ -71,7 +78,7 @@ namespace FubuMovies.FubuConfiguration
             HtmlConvention<DefaultHtmlConventions>();
             
             this.Validation(validation =>
-                                {
+                                { 
                                     validation.Actions.Include(
                                         call =>
                                         call.HasInput &&
