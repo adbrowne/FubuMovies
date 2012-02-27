@@ -11,20 +11,25 @@ namespace FubuMovies.FubuConfiguration
         private readonly IFubuRequest request;
         private readonly IUrlRegistry registry;
         private readonly IOutputWriter writer;
+        private readonly IActionBehavior innerBehavior;
 
         public LoginResultBehavior(
             IFubuRequest request, 
             IUrlRegistry registry,
-            IOutputWriter writer
+            IOutputWriter writer,
+            IActionBehavior innerBehavior
         )
         {
             this.request = request;
             this.registry = registry;
             this.writer = writer;
+            this.innerBehavior = innerBehavior;
         }
 
         public void Invoke()
         {
+            innerBehavior.Invoke();
+           
             var loginResult = request.Get<LoginResultModel>();
             string url;
             if(loginResult.Success)
@@ -40,7 +45,7 @@ namespace FubuMovies.FubuConfiguration
 
         public void InvokePartial()
         {
-            
+            innerBehavior.InvokePartial();           
         }
     }
 }

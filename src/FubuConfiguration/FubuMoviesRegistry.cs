@@ -50,7 +50,7 @@ namespace FubuMovies.FubuConfiguration
 
             Policies.WrapBehaviorChainsWith<LoginBehaviour>().Ordering(a => a.MustBeBeforeAuthorization());
 
-            Policies.ConditionallyWrapBehaviorChainsWith<LoginResultBehavior>(x => x.OutputType() is typeof(LoginResultModel))
+            Policies.ConditionallyWrapBehaviorChainsWith<LoginResultBehavior>(x => x.OutputType() == typeof(LoginResultModel))
             ;
             Configure(graph =>
                       graph.ApplyRedirectOnAddAndUpdate()
