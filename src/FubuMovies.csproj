@@ -148,7 +148,7 @@
     <Compile Include="FubuConfiguration\RedirectOutputNode.cs" />
     <Compile Include="FubuConfiguration\RegExtensions.cs" />
     <Compile Include="Infrastructure\RedirectOnAddAndUpdateBehavior.asax.cs" />
-    <Compile Include="LoginBehaviour.asax.cs" />
+    <Compile Include="Infrastructure\SetupRoleBehavior.cs" />
     <Compile Include="Web\Admin\GetHandler.cs" />
     <Compile Include="Web\Api\AddInputModel.cs" />
     <Compile Include="Web\Api\AddModel.cs" />

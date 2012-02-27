@@ -48,7 +48,7 @@ namespace FubuMovies.FubuConfiguration
 
             Policies.WrapBehaviorChainsWith<TransactionBehavior>();
 
-            Policies.WrapBehaviorChainsWith<LoginBehaviour>().Ordering(a => a.MustBeBeforeAuthorization());
+            Policies.WrapBehaviorChainsWith<SetupRoleBehavior>().Ordering(a => a.MustBeBeforeAuthorization());
 
             Policies.ConditionallyWrapBehaviorChainsWith<LoginResultBehavior>(x => x.OutputType() == typeof(LoginResultModel))
             ;
