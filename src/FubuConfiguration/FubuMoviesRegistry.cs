@@ -4,8 +4,10 @@ using FubuMovies.Timetable;
 using FubuMovies.Web;
 using FubuMovies.Web.Api;
 using FubuMVC.Core;
+using FubuMVC.Core.Registration.ObjectGraph;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
+using FubuMVC.Core.UI;
 using FubuMVC.Core.UI.Configuration;
 using FubuMVC.Core.UI.Extensibility;
 using FubuMVC.Core.Urls;
@@ -69,7 +71,9 @@ namespace FubuMovies.FubuConfiguration
             
             HtmlConvention<MyPasswordConvention>();
             HtmlConvention<MyLoginFormConvention>();
-            HtmlConvention<EntityReferenceConvention>();
+            Services(s => s.AddService(typeof(HtmlConventionRegistry), ObjectDef.ForType<EntityReferenceConvention>()));
+
+            //HtmlConvention<EntityReferenceConvention>();
             HtmlConvention<DefaultHtmlConventions>();
             
             this.Validation(validation =>

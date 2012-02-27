@@ -12,18 +12,17 @@ namespace FubuMovies.FubuConfiguration
 {
     public class EntityReferenceConvention : HtmlConventionRegistry
     {
+        private readonly ISession session;
 
-        public EntityReferenceConvention()
+        public EntityReferenceConvention(ISession session)
         {
+            this.session = session;
             //Editors.If(x => x.Accessor.Name == "Movie").BuildBy(builder =>
             //{
             //    return NewSelectList();
             //});
-            Editors.Builder<MyBuilder>();
-            //Editors.IfPropertyTypeIs(IsEntity).BuildBy(builder =>
-            //                                                                    {
-            //                                                                        return NewSelectList();
-            //                                                                    });
+            //Editors.Builder<MyBuilder>();
+            Editors.IfPropertyTypeIs(IsEntity).BuildBy(builder => NewSelectList(builder.Accessor.PropertyType));
         }
 
         private bool IsEntity(Type x)
@@ -31,30 +30,9 @@ namespace FubuMovies.FubuConfiguration
             return x.CanBeCastTo<IEntity>();
         }
 
-        private HtmlTag NewSelectList()
+        private HtmlTag NewSelectList(Type propertyType)
         {
-            var selectList = new SelectTag();
-            return selectList;
-            //return new HtmlTag("input").Attr("type", "password");
-        }
-    }
-
-    public class MyBuilder : ElementBuilder
-    {
-        protected override bool matches(AccessorDef def)
-        {
-            return IsEntity(def.Accessor.PropertyType) && def.ModelType.CanBeCastTo <ISessionViewModel>();
-        }
-
-        private bool IsEntity(Type x)
-        {
-            return x.CanBeCastTo<IEntity>();
-        }
-
-        public override HtmlTag Build(ElementRequest request)
-        {
-            var session = ((ISessionViewModel) request.Model).Session;
-            var items = session.CreateCriteria(request.Accessor.PropertyType).List<IEntity>();
+            var items = session.CreateCriteria(propertyType).List<IEntity>();
             var selectList = new SelectTag();
             foreach (var entity in items)
             {
@@ -63,4 +41,32 @@ namespace FubuMovies.FubuConfiguration
             return selectList;
         }
     }
+
+    //public class MyBuilder : ElementBuilder
+    //{
+    //    public MyBuilder()
+    //    {
+            
+    //    }
+    //    protected override bool matches(AccessorDef def)
+    //    {
+    //        return IsEntity(def.Accessor.PropertyType) && def.ModelType.CanBeCastTo <ISessionViewModel>();
+    //    }
+
+    //    private bool IsEntity(Type x)
+    //    {
+    //        return x.CanBeCastTo<IEntity>();
+    //    }
+
+    //    public override HtmlTag Build(ElementRequest request)
+    //    {
+    //        var items = session.CreateCriteria(request.Accessor.PropertyType).List<IEntity>();
+    //        var selectList = new SelectTag();
+    //        foreach (var entity in items)
+    //        {
+    //            selectList.Option(entity.ToString(), entity.Id);
+    //        }
+    //        return selectList;
+    //    }
+    //}
 }
