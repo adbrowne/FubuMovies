@@ -1,4 +1,5 @@
-﻿using FubuMovies.Core;
+﻿using System.Collections.Generic;
+using FubuMovies.Core;
 using FubuMVC.Core.View;
 
 namespace FubuMovies.Web.Api
@@ -12,6 +13,11 @@ namespace FubuMovies.Web.Api
                                             Id = entity.Id
                                         };
             return getByIdInputModel;
+        }
+
+        public static NewInputModel<TEntity> GetNewModel<TEntity>(this IFubuPage page) where TEntity : IEntity, new()
+        {
+            return new NewInputModel<TEntity>();
         }
 
         public static UpdateModel<TEntity> GetUpdateModel<TEntity>(this IFubuPage page, TEntity entity) where TEntity: IEntity, new()

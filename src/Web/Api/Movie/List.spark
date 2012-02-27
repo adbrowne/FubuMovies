@@ -13,3 +13,5 @@
     </li>
   </for>
 </ul>
+
+!{this.LinkTo(this.GetNewModel<FubuMovies.Core.Movie>()).Text("Add New")}
