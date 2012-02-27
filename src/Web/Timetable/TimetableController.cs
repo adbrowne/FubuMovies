@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 
@@ -14,8 +16,11 @@ namespace FubuMovies.Timetable
 
         public TimetableViewModel View(TimetableRequest request)
         {
-            var session = unifOfWork.CurrentSession.Get<MovieSession>(1);
-            return new TimetableViewModel();
+            var sessions = unifOfWork.CurrentSession.CreateCriteria<MovieSession>().List<MovieSession>();
+            return new TimetableViewModel
+                       {
+                           Sessions = sessions
+                       };
         }
     }
 
@@ -25,5 +30,6 @@ namespace FubuMovies.Timetable
 
     public class TimetableViewModel
     {
+        public IList<MovieSession> Sessions { get; set; }
     }
 }
