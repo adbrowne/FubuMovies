@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -44,15 +43,18 @@
           <a class="brand" href="/">The Movies</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active">
-                <a href="./booking">Book</a>
-              </li>
               <li class="">
-                <a href="./admin">Admin</a>
+				!{this.LinkTo<FubuMovies.Web.Admin.EditorInputModel>().Text("Admin")}
+              </li>
+			  <li class="">
+				!{this.LinkTo<FubuMovies.Web.Login.LoginInputModel>().Text("Login")}
+              </li>
+			  <li class="">
+				!{this.LinkTo<FubuMovies.Web.Logout.LogoutInputModel>().Text("Logout")}
               </li>
               <li class="divider-vertical"></li>
               <li class="">
-                <a href="contact">Contact Us</a>
+                <a href="#">Contact Us</a>
               </li>
             </ul>
           </div>

@@ -1,7 +1,7 @@
 ﻿using FubuMovies.Infrastructure;
 using FubuValidation;
 
-namespace FubuMovies.Login
+namespace FubuMovies.Web.Login
 {
     public class LoginSubmitInputModel : IValidationModel
     {

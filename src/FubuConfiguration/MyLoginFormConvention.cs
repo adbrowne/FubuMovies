@@ -1,4 +1,4 @@
-﻿using FubuMovies.Login;
+﻿using FubuMovies.Web.Login;
 using FubuMVC.Core.UI;
 
 namespace FubuMovies.FubuConfiguration

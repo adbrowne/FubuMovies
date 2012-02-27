@@ -1,5 +1,4 @@
-﻿<use namespace="FubuMovies.Login"/>
-<viewdata model="FubuMovies.Admin.EditTimetableViewModel" />
+﻿<viewdata model="FubuMovies.Web.Admin.EditTimetableViewModel" />
 <content:title>
   Movie Admin
 </content:title>

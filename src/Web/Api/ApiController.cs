@@ -1,5 +1,4 @@
-﻿using System;
-using FubuMovies.Core;
+﻿using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMVC.Core;
 using NHibernate;

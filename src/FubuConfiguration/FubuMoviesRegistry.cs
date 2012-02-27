@@ -32,25 +32,16 @@ namespace FubuMovies.FubuConfiguration
             Actions.IncludeType<ApiController<Movie>>();
             Actions.IncludeType<ApiController<MovieSession>>();
 
-            ApplyHandlerConventions();
-
             Routes
                 .HomeIs<TimetableRequest>()
                 .IgnoreControllerNamespaceEntirely()
                 .IgnoreMethodSuffix("Command")
                 .IgnoreMethodSuffix("Query")
-                .UrlPolicy(new MyUrlPolicy())
-                .ConstrainToHttpMethod(action => action.Method.Name.EndsWith("Command"), "POST")
-                .ConstrainToHttpMethod(action => action.Method.Name.StartsWith("Index"), "GET")
-                .ConstrainToHttpMethod(action => action.Method.Name.ToLower() == "get", "GET")
-                .ConstrainToHttpMethod(action => action.Method.Name.ToLower() == "post", "POST");
+                .UrlPolicy(new MyUrlPolicy());
 
-            ApplyHandlerConventions(typeof(HandlersMarker));
+            //Actions.IncludeTypes(t => t.Name.EndsWith("Handler")).IgnoreMethodsDeclaredBy<AuthorizationHandler>();
 
-            //Models
-            //    .BindModelsWith<EntityModelBinder>();
-
-            Actions.IncludeTypes(t => t.Name.EndsWith("Handler")).IgnoreMethodsDeclaredBy<AuthorizationHandler>();
+            ApplyHandlerConventions<HandlersMarker>();
 
             Policies.Add<AntiForgeryPolicy>();
 

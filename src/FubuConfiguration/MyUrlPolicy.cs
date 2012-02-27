@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FubuCore.Reflection;
+using FubuCore;
 using FubuMovies.Core;
 using FubuMovies.Web.Api;
 using FubuMVC.Core.Diagnostics;
@@ -34,7 +35,8 @@ namespace FubuMovies.FubuConfiguration
 
         public bool Matches(ActionCall call, IConfigurationObserver log)
         {
-            return IsSubclassOfRawGeneric(typeof(ApiController<>), call.HandlerType);
+            return call.HandlerType.Closes(typeof (ApiController<>));
+            //return IsSubclassOfRawGeneric(typeof(ApiController<>), call.HandlerType);
         }
 
         public IRouteDefinition Build(ActionCall call)

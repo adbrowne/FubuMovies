@@ -1,8 +1,8 @@
-using FubuMovies.Admin;
 using FubuMovies.Infrastructure;
+using FubuMovies.Web.Admin;
 using FubuMVC.Core.Continuations;
 
-namespace FubuMovies.Login
+namespace FubuMovies.Web.Login
 {
     public class PostHandler
     {
@@ -13,7 +13,7 @@ namespace FubuMovies.Login
             this.authenticationService = authenticationService;
         }
 
-        public FubuContinuation Post(LoginSubmitInputModel input)
+        public FubuContinuation Execute(LoginSubmitInputModel input)
         {
             var authenticated = authenticationService.Authenticate(
                 input.Username, 

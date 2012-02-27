@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace FubuMovies.Infrastructure
 {
@@ -19,6 +20,11 @@ namespace FubuMovies.Infrastructure
                 httpContext.Session["user"] = "admin";
             }
             return authenticated;
+        }
+
+        public void Logout()
+        {
+            httpContext.Session["user"] = null;
         }
     }
 }

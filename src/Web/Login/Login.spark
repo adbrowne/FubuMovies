@@ -1,11 +1,11 @@
-﻿<use namespace="FubuMovies.Login"/>
-<viewdata model="FubuMovies.Login.LoginViewModel" />
+﻿<use namespace="FubuMovies.Web.Login"/>
+<viewdata model="FubuMovies.Web.Login.LoginViewModel" />
 <content:title>
   Login
 </content:title>
 <h1>Login</h1>
 <ValidationErrors />
-<Form model="LoginInputModel">
+<Form model="FubuMovies.Web.Login.LoginInputModel">
   <div class="row">
     <LabelFor property="Username" />
     <InputFor property="Username" />

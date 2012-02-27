@@ -186,6 +186,7 @@
     <Compile Include="Infrastructure\NHibernateRegistry.cs" />
     <Compile Include="Web\Login\PostHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Logout\GetHandler.cs" />
     <Compile Include="Web\Timetable\TimetableController.cs" />
   </ItemGroup>
   <ItemGroup>
