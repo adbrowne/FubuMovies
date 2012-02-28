@@ -3,11 +3,14 @@ using System.Linq;
 using FubuMovies.Core;
 using FubuMovies.Infrastructure;
 using FubuMovies.Web;
+using FubuMovies.Web.About;
+using FubuMovies.Web.Admin;
 using FubuMovies.Web.Api;
 using FubuMovies.Web.Login;
 using FubuMovies.Web.Timetable;
 using FubuMVC.Core;
 using FubuMVC.Core.Registration.ObjectGraph;
+using FubuMVC.Core.Registration.Routes;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.Security.AntiForgery;
 using FubuMVC.Core.UI;
@@ -64,6 +67,10 @@ namespace FubuMovies.FubuConfiguration
                 );
 
             this.UseSpark();
+
+            Views.RegisterActionLessViews(
+                token => token.ViewModelType == typeof (AboutViewModel), 
+                chain => chain.Route = new RouteDefinition("about"));
 
             Views
                 .TryToAttachWithDefaultConventions()
