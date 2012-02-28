@@ -30,19 +30,24 @@
    </script>
 </ignore>
 <div id="editor">
-  <p>Movie List</p>
+  <h2>Movie List</h2>
   <ul id="movie-list">
 
   </ul>
 
-  Name: <input type="text" id="new-name"></input>
-  Description <textarea id="new-description"></textarea>
-  <button id="movie-add">Add</button>
-
-  <p>Session List</p>
+  <h2>Session List</h2>
   <ul id="movie-session-list">
     
   </ul>
+
+  <h2>Add Movie</h2>
+  <div>
+    Name: <input type="text" id="new-name"></input>
+  </div>
+  <div>
+    Description: <textarea id="new-description"></textarea>  
+  </div>
+  <button id="movie-add">Add</button>
 </div>
 
 <Asset name="jquery" />

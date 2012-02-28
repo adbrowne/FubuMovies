@@ -1,0 +1,9 @@
+﻿<viewdata model="FubuMovies.Web.About.AboutViewModel" />
+<content:title>
+  About
+</content:title>
+<h1>About</h1>
+
+<p>Sample app built by Andrew Browne (@adbrowne) - blame him.</p>
+
+<img src="/content/img/castle.jpg"/>
